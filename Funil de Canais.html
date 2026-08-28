@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Funil de Atendimentos · Central de Consultas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        /* ── RESET & BASE ── */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #eef2f7;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 24px;
+        }
+        .dashboard {
+            max-width: 1400px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 36px;
+            padding: 40px 44px 44px;
+            box-shadow: 0 20px 60px rgba(0,20,40,0.08);
+            border: 1px solid #e6edf4;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .header-left .logo-dr { height: 44px; width: auto; }
+        .header-left .divider { width: 1px; height: 32px; background: #d0d9e6; }
+        .header-left .title-group .main-title { font-size: 22px; font-weight: 800; color: #0b1a33; letter-spacing: -0.3px; }
+        .header-left .title-group .sub-title { font-size: 13px; font-weight: 500; color: #5a6f8c; }
+        .tab-bar {
+            display: flex;
+            gap: 6px;
+            background: #f0f4fb;
+            border-radius: 18px;
+            padding: 5px;
+            margin-bottom: 32px;
+            border: 1px solid #dce3ed;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #5a6f8c;
+            cursor: pointer;
+            transition: 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: 'Inter', sans-serif;
+        }
+        .tab-btn i { font-size: 18px; }
+        .tab-btn:hover { color: #0b1a33; background: rgba(255,255,255,0.5); }
+        .tab-btn.active { background: #ffffff; color: #0b1a33; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* ── DOIS PAINÉIS LADO A LADO ── */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 8px;
+        }
+        .funnel-panel {
+            background: #fafcff;
+            border-radius: 24px;
+            padding: 20px 20px 24px;
+            border: 1px solid #e6edf4;
+            box-shadow: 0 2px 8px rgba(0,20,40,0.04);
+        }
+        .funnel-panel .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .funnel-panel .panel-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0b1a33;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .funnel-panel .panel-title i { color: #3b82f6; }
+        .funnel-panel .panel-selector input[type="month"] {
+            background: #ffffff;
+            border: 1px solid #d0d9e6;
+            border-radius: 100px;
+            padding: 6px 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: #0b1a33;
+            outline: none;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .funnel-panel .panel-selector input[type="month"]:hover { border-color: #3b82f6; }
+        .funnel-panel .panel-selector input[type="month"]:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+
+        /* ── CARDS DE MÉTRICAS (WhatsApp) ── */
+        .metric-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+        .metric-card {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 14px 16px;
+            border: 1px solid #e6edf4;
+            text-align: center;
+            transition: 0.2s ease;
+        }
+        .metric-card:hover {
+            background: #f1f5f9;
+            border-color: #b8c9dd;
+        }
+        .metric-card .metric-value {
+            font-size: 26px;
+            font-weight: 800;
+            color: #0b1a33;
+            letter-spacing: -0.5px;
+        }
+        .metric-card .metric-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #5a6f8c;
+            margin-top: 2px;
+        }
+        .metric-card .metric-icon {
+            font-size: 18px;
+            color: #3b82f6;
+            margin-right: 6px;
+        }
+        .metric-card.blue .metric-value { color: #3b82f6; }
+        .metric-card.purple .metric-value { color: #8b5cf6; }
+
+        .funnel-panel .funnel { display: flex; flex-direction: column; gap: 10px; }
+
+        /* Estilos dos steps */
+        .funnel-step {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 14px 20px;
+            border: 1px solid #e6edf4;
+            transition: 0.25s ease;
+            box-shadow: 0 2px 6px rgba(0,20,40,0.04);
+        }
+        .funnel-step:hover { background: #f1f5f9; border-color: #b8c9dd; box-shadow: 0 4px 12px rgba(0,20,40,0.06); }
+        
+        /* Larguras decrescentes para 6 etapas (WhatsApp) */
+        .funnel-step:nth-child(1) { width: 100%; margin-left: 0; }
+        .funnel-step:nth-child(2) { width: 92%; margin-left: 4%; }
+        .funnel-step:nth-child(3) { width: 84%; margin-left: 8%; }
+        .funnel-step:nth-child(4) { width: 76%; margin-left: 12%; }
+        .funnel-step:nth-child(5) { width: 68%; margin-left: 16%; }
+        .funnel-step:nth-child(6) { width: 60%; margin-left: 20%; }
+        
+        /* Voz (7 etapas) */
+        .funnel-step.voice-step:nth-child(1) { 
+            width: 100%; 
+            margin-left: 0; 
+            cursor: pointer; 
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .funnel-step.voice-step:nth-child(1):hover { 
+            background: #e0f2fe; 
+            border-color: #3b82f6; 
+            box-shadow: 0 4px 12px rgba(59,130,246,0.15); 
+        }
+        .funnel-step.voice-step:nth-child(2) { width: 94%; margin-left: 3%; }
+        .funnel-step.voice-step:nth-child(3) { width: 88%; margin-left: 6%; }
+        .funnel-step.voice-step:nth-child(4) { width: 82%; margin-left: 9%; }
+        .funnel-step.voice-step:nth-child(5) { width: 76%; margin-left: 12%; }
+        .funnel-step.voice-step:nth-child(6) { width: 70%; margin-left: 15%; }
+        .funnel-step.voice-step:nth-child(7) { width: 64%; margin-left: 18%; }
+
+        /* Layout interno do primeiro step (Chamadas Recebidas) */
+        .funnel-step .step-main {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+        }
+        .funnel-step .step-icon { flex-shrink: 0; }
+        .funnel-step .step-info { flex: 1; }
+        .funnel-step .step-label { font-weight: 600; font-size: 15px; color: #0b1a33; }
+        .funnel-step .step-value { font-weight: 800; font-size: 24px; color: #0b1a33; letter-spacing: -0.5px; }
+        .funnel-step .step-value small { font-weight: 400; font-size: 14px; color: #5a6f8c; margin-left: 4px; }
+        .funnel-step .step-percent { font-size: 13px; font-weight: 600; color: #475569; background: #eef2f7; padding: 2px 14px; border-radius: 100px; border: 1px solid #d0d9e6; display: inline-block; margin-top: 4px; }
+        .funnel-step .step-split { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 4px; }
+        .funnel-step .step-split-item { display: flex; align-items: baseline; gap: 6px; background: #f1f5f9; padding: 4px 12px; border-radius: 100px; border: 1px solid #d0d9e6; }
+        .funnel-step .step-split-item .label { font-weight: 500; font-size: 13px; color: #475569; }
+        .funnel-step .step-split-item .value { font-weight: 700; font-size: 16px; color: #0b1a33; }
+        .funnel-step .step-bar { width: 100%; height: 6px; background: #e6edf4; border-radius: 99px; overflow: hidden; margin-top: 6px; }
+        .funnel-step .step-bar .bar-fill { height: 100%; border-radius: 99px; transition: width 0.6s ease; }
+        .funnel-step .click-hint {
+            font-size: 11px;
+            color: #3b82f6;
+            font-weight: 500;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* ── DETALHES EXPANDIDOS DAS CHAMADAS ── */
+        .chamadas-detalhes {
+            display: none;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 2px dashed #d0d9e6;
+            gap: 10px;
+            flex-direction: column;
+        }
+        .chamadas-detalhes.open {
+            display: flex;
+        }
+        .chamadas-detalhes .detalhe-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 1px solid #e6edf4;
+        }
+        .chamadas-detalhes .detalhe-item .label {
+            font-weight: 500;
+            color: #475569;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .chamadas-detalhes .detalhe-item .label i { 
+            color: #3b82f6; 
+            width: 18px;
+        }
+        .chamadas-detalhes .detalhe-item .value {
+            font-weight: 700;
+            font-size: 18px;
+            color: #0b1a33;
+        }
+        .chamadas-detalhes .detalhe-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #eef2f7;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 2px solid #d0d9e6;
+        }
+        .chamadas-detalhes .detalhe-total .label {
+            font-weight: 600;
+            color: #0b1a33;
+            font-size: 14px;
+        }
+        .chamadas-detalhes .detalhe-total .value {
+            font-weight: 800;
+            font-size: 20px;
+            color: #0b1a33;
+        }
+
+        /* Cores das barras */
+        .bar-fill.blue { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .bar-fill.purple { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+        .bar-fill.teal { background: linear-gradient(90deg, #0d9488, #2dd4bf); }
+        .bar-fill.green { background: linear-gradient(90deg, #059669, #34d399); }
+        .bar-fill.amber { background: linear-gradient(90deg, #d97706, #fbbf24); }
+        .bar-fill.red { background: linear-gradient(90deg, #dc2626, #f87171); }
+        .bar-fill.cyan { background: linear-gradient(90deg, #0891b2, #22d3ee); }
+        .bar-fill.orange { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+
+        /* Ícones */
+        .step-icon { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; flex-shrink: 0; }
+        .step-icon.total { background: #3b82f6; }
+        .step-icon.enviadas { background: #8b5cf6; }
+        .step-icon.recebidas { background: #0d9488; }
+        .step-icon.consulta { background: #059669; }
+        .step-icon.exame { background: #d97706; }
+        .step-icon.odonto { background: #dc2626; }
+        .step-icon.outros { background: #f59e0b; }
+        .step-icon.agendamento { background: #7c3aed; }
+        .step-icon.phone-recebidas { background: #0d9488; }
+        .step-icon.phone-atendidas { background: #2563eb; }
+        .step-icon.phone-agendamentos { background: #7c3aed; }
+        .step-icon.phone-consulta { background: #059669; }
+        .step-icon.phone-exame { background: #d97706; }
+        .step-icon.phone-odonto { background: #dc2626; }
+        .step-icon.phone-perda { background: #ef4444; }
+
+        .footer {
+            margin-top: 36px;
+            padding-top: 20px;
+            border-top: 1px solid #e6edf4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: #5a6f8c;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer .source { display: flex; align-items: center; gap: 10px; }
+        .footer .source img { height: 22px; width: auto; opacity: 0.6; }
+
+        @media (max-width: 900px) {
+            .comparison-grid { grid-template-columns: 1fr; gap: 24px; }
+            .dashboard { padding: 24px 20px; }
+            .funnel-step { padding: 12px 16px; gap: 14px; }
+            .funnel-step .step-value { font-size: 20px; }
+            .metric-cards { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 500px) {
+            .dashboard { padding: 16px 12px; border-radius: 24px; }
+            .funnel-step { padding: 10px 12px; gap: 10px; }
+            .funnel-step .step-value { font-size: 18px; }
+            .funnel-step .step-percent { font-size: 11px; padding: 1px 8px; }
+            .funnel-step .step-split-item .value { font-size: 14px; }
+            .tab-bar { flex-direction: column; border-radius: 14px; }
+            .metric-cards { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .metric-card .metric-value { font-size: 20px; }
+            .funnel-step .step-main { flex-wrap: wrap; gap: 10px; }
+            .chamadas-detalhes .detalhe-item { padding: 8px 12px; }
+            .chamadas-detalhes .detalhe-item .value { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-left">
+            <img src="https://drcentral.com.br/wp-content/uploads/2026/06/Camada-1.svg" alt="Central de Consultas" class="logo-dr" />
+            <span class="divider"></span>
+            <div class="title-group">
+                <span class="main-title">Funil de Atendimentos</span>
+                <span class="sub-title">Central de Consultas · Comparação entre meses</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABAS -->
+    <div class="tab-bar">
+        <button class="tab-btn active" data-tab="whatsapp"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+        <button class="tab-btn" data-tab="voz"><i class="fa-solid fa-phone"></i> Voz</button>
+    </div>
+
+    <!-- ABA WHATSAPP -->
+    <div id="tab-whatsapp" class="tab-content active">
+        <div class="comparison-grid">
+            <!-- Painel 1 -->
+            <div class="funnel-panel" id="whatsPanel1">
+                <div class="panel-header">
+                    <span class="panel-title"><i class="fa-regular fa-calendar-alt"></i> <span id="whatsTitle1">Mês 1</span></span>
+                    <div class="panel-selector">
+                        <input type="month" id="whatsMonth1" min="2026-06" value="2026-06" />
+                    </div>
+                </div>
+                <div class="metric-cards" id="whatsMetrics1">
+                    <div class="metric-card blue">
+                        <div class="metric-value" id="whatsBase1">0</div>
+                        <div class="metric-label"><i class="fa-regular fa-flag metric-icon"></i>Base Total</div>
+                    </div>
+                    <div class="metric-card purple">
+                        <div class="metric-value" id="whatsEnviadas1">0</div>
+                        <div class="metric-label"><i class="fa-regular fa-paper-plane metric-icon"></i>Mensagens Enviadas</div>
+                    </div>
+                </div>
+                <div class="funnel" id="whatsappFunnel1"></div>
+            </div>
+            <!-- Painel 2 -->
+            <div class="funnel-panel" id="whatsPanel2">
+                <div class="panel-header">
+                    <span class="panel-title"><i class="fa-regular fa-calendar-alt"></i> <span id="whatsTitle2">Mês 2</span></span>
+                    <div class="panel-selector">
+                        <input type="month" id="whatsMonth2" min="2026-06" value="2026-07" />
+                    </div>
+                </div>
+                <div class="metric-cards" id="whatsMetrics2">
+                    <div class="metric-card blue">
+                        <div class="metric-value" id="whatsBase2">0</div>
+                        <div class="metric-label"><i class="fa-regular fa-flag metric-icon"></i>Base Total</div>
+                    </div>
+                    <div class="metric-card purple">
+                        <div class="metric-value" id="whatsEnviadas2">0</div>
+                        <div class="metric-label"><i class="fa-regular fa-paper-plane metric-icon"></i>Mensagens Enviadas</div>
+                    </div>
+                </div>
+                <div class="funnel" id="whatsappFunnel2"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABA VOZ -->
+    <div id="tab-voz" class="tab-content">
+        <div class="comparison-grid">
+            <!-- Painel 1 -->
+            <div class="funnel-panel" id="vozPanel1">
+                <div class="panel-header">
+                    <span class="panel-title"><i class="fa-regular fa-calendar-alt"></i> <span id="vozTitle1">Mês 1</span></span>
+                    <div class="panel-selector">
+                        <input type="month" id="vozMonth1" min="2026-06" value="2026-06" />
+                    </div>
+                </div>
+                <div class="funnel" id="vozFunnel1"></div>
+            </div>
+            <!-- Painel 2 -->
+            <div class="funnel-panel" id="vozPanel2">
+                <div class="panel-header">
+                    <span class="panel-title"><i class="fa-regular fa-calendar-alt"></i> <span id="vozTitle2">Mês 2</span></span>
+                    <div class="panel-selector">
+                        <input type="month" id="vozMonth2" min="2026-06" value="2026-07" />
+                    </div>
+                </div>
+                <div class="funnel" id="vozFunnel2"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RODAPÉ -->
+    <div class="footer">
+        <span>
+    Dados atualizados em <strong id="ultimaAtualizacao"></strong>
+</span>
+        <span class="source">
+            <i class="fa-regular fa-database"></i> Central de Consultas
+            <img src="https://drcentral.com.br/wp-content/uploads/2026/07/images-2-1.jpg" alt="Central de Consultas" />
+        </span>
+    </div>
+
+</div>
+
+<script>
+    // ============================================================
+    // DADOS PRINCIPAIS - TUDO NO MESMO BLOCO POR MÊS
+    // ============================================================
+    const dadosMensais = {
+    "2026-06": {
+        "whats": {
+            "base": 90102,
+            "enviadas": 39058,
+            "recebidas": 51044,
+            "consultas": 27535,
+            "exames": 14540,
+            "odonto": 3170,
+            "outros": 5799,
+            "agendamentos": 13777,
+            "agendHumano": 3230,
+            "agendBot": 10547
+        },
+        "voz": {
+            "recebidas": 27440,
+            "atendidas": 25529,
+            "perda": 952,
+            "agendamentos": 7691,
+            "agendaConsultas": 5690,
+            "agendaExames": 1596,
+            "agendaOdonto": 378,
+            "ligacoes1515": 23583,
+            "ligacoes6080": 3763
+        }
+    },
+    "2026-07": {
+        "whats": {
+            "base": 97619,
+            "enviadas": 37849,
+            "recebidas": 59770,
+            "consultas": 30672,
+            "exames": 16130,
+            "odonto": 3220,
+            "outros": 9748,
+            "agendamentos": 14524,
+            "agendHumano": 3001,
+            "agendBot": 11523
+        },
+        "voz": {
+            "recebidas": 32016,
+            "atendidas": 26279,
+            "perda": 3719,
+            "agendamentos": 7696,
+            "agendaConsultas": 5470,
+            "agendaExames": 1818,
+            "agendaOdonto": 381,
+            "ligacoes1515": 27543,
+            "ligacoes6080": 4383
+        }
+    },
+    "2026-08": {
+        "whats": {
+            "base": 0,
+            "enviadas": 0,
+            "recebidas": 0,
+            "consultas": 0,
+            "exames": 0,
+            "odonto": 0,
+            "outros": 0,
+            "agendamentos": 0,
+            "agendHumano": 0,
+            "agendBot": 0
+        },
+        "voz": {
+            "recebidas": 32500,
+            "atendidas": 25808,
+            "perda": 4319,
+            "agendamentos": 5922,
+            "agendaConsultas": 3827,
+            "agendaExames": 1712,
+            "agendaOdonto": 365,
+            "ligacoes1515": 22456,
+            "ligacoes6080": 9931
+        }
+    },
+    "2026-09": {
+        "whats": {
+            "base": 0,
+            "enviadas": 0,
+            "recebidas": 0,
+            "consultas": 0,
+            "exames": 0,
+            "odonto": 0,
+            "outros": 0,
+            "agendamentos": 0,
+            "agendHumano": 0,
+            "agendBot": 0
+        },
+        "voz": {
+            "recebidas": 0,
+            "atendidas": 0,
+            "perda": 0,
+            "agendamentos": 0,
+            "agendaConsultas": 0,
+            "agendaExames": 0,
+            "agendaOdonto": 0,
+            "ligacoes1515": 0,
+            "ligacoes6080": 0
+        }
+    },
+    "2026-10": {
+        "whats": {
+            "base": 0,
+            "enviadas": 0,
+            "recebidas": 0,
+            "consultas": 0,
+            "exames": 0,
+            "odonto": 0,
+            "outros": 0,
+            "agendamentos": 0,
+            "agendHumano": 0,
+            "agendBot": 0
+        },
+        "voz": {
+            "recebidas": 0,
+            "atendidas": 0,
+            "perda": 0,
+            "agendamentos": 0,
+            "agendaConsultas": 0,
+            "agendaExames": 0,
+            "agendaOdonto": 0,
+            "ligacoes1515": 0,
+            "ligacoes6080": 0
+        }
+    },
+    "2026-11": {
+        "whats": {
+            "base": 0,
+            "enviadas": 0,
+            "recebidas": 0,
+            "consultas": 0,
+            "exames": 0,
+            "odonto": 0,
+            "outros": 0,
+            "agendamentos": 0,
+            "agendHumano": 0,
+            "agendBot": 0
+        },
+        "voz": {
+            "recebidas": 0,
+            "atendidas": 0,
+            "perda": 0,
+            "agendamentos": 0,
+            "agendaConsultas": 0,
+            "agendaExames": 0,
+            "agendaOdonto": 0,
+            "ligacoes1515": 0,
+            "ligacoes6080": 0
+        }
+    },
+    "2026-12": {
+        "whats": {
+            "base": 0,
+            "enviadas": 0,
+            "recebidas": 0,
+            "consultas": 0,
+            "exames": 0,
+            "odonto": 0,
+            "outros": 0,
+            "agendamentos": 0,
+            "agendHumano": 0,
+            "agendBot": 0
+        },
+        "voz": {
+            "recebidas": 0,
+            "atendidas": 0,
+            "perda": 0,
+            "agendamentos": 0,
+            "agendaConsultas": 0,
+            "agendaExames": 0,
+            "agendaOdonto": 0,
+            "ligacoes1515": 0,
+            "ligacoes6080": 0
+        }
+    }
+};
+
+    // ============================================================
+    // FUNÇÕES AUXILIARES
+    // ============================================================
+    function nomeMes(mes) {
+        const nomes = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+        const partes = mes.split('-');
+        const ano = partes[0];
+        const mesNum = parseInt(partes[1],10) - 1;
+        return nomes[mesNum] + ' ' + ano;
+    }
+
+    // ============================================================
+    // TOGGLE DOS DETALHES DAS CHAMADAS
+    // ============================================================
+    function toggleChamadas(stepElement, mes) {
+        const detalhes = stepElement.querySelector('.chamadas-detalhes');
+        if (detalhes) {
+            detalhes.classList.toggle('open');
+        }
+    }
+
+    // ============================================================
+    // RENDERIZAÇÃO DO FUNIL WHATSAPP
+    // ============================================================
+    function renderizarFunilWhats(containerId, dados, panelIndex) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        const w = dados.whats;
+
+        document.getElementById(`whatsBase${panelIndex}`).textContent = w.base.toLocaleString('pt-BR');
+        document.getElementById(`whatsEnviadas${panelIndex}`).textContent = w.enviadas.toLocaleString('pt-BR');
+
+        const steps = [
+            { label: 'Mensagens Recebidas', value: w.recebidas, icon: 'recebidas', barClass: 'teal', percent: 100 },
+            { label: 'Consultas', value: w.consultas, icon: 'consulta', barClass: 'green', percent: (w.recebidas > 0 ? (w.consultas / w.recebidas * 100) : 0), extra: `<span class="step-percent">${(w.recebidas > 0 ? (w.consultas / w.recebidas * 100).toFixed(1) : '0')}% das Mensagens Recebidas</span>` },
+            { label: 'Exames', value: w.exames, icon: 'exame', barClass: 'amber', percent: (w.recebidas > 0 ? (w.exames / w.recebidas * 100) : 0), extra: `<span class="step-percent">${(w.recebidas > 0 ? (w.exames / w.recebidas * 100).toFixed(1) : '0')}% das Mensagens Recebidas</span>` },
+            { label: 'Odontologia', value: w.odonto, icon: 'odonto', barClass: 'red', percent: (w.recebidas > 0 ? (w.odonto / w.recebidas * 100) : 0), extra: `<span class="step-percent">${(w.recebidas > 0 ? (w.odonto / w.recebidas * 100).toFixed(1) : '0')}% das Mensagens Recebidas</span>` },
+            { label: 'Outros Assuntos', value: w.outros, icon: 'outros', barClass: 'orange', percent: (w.recebidas > 0 ? (w.outros / w.recebidas * 100) : 0), extra: `<span class="step-percent">${(w.recebidas > 0 ? (w.outros / w.recebidas * 100).toFixed(1) : '0')}% das Mensagens Recebidas</span>` },
+            { label: 'Agendamentos', value: w.agendamentos, icon: 'agendamento', barClass: 'purple', percent: (w.recebidas > 0 ? (w.agendamentos / w.recebidas * 100) : 0), extra: `
+                <span class="step-percent">${(w.recebidas > 0 ? (w.agendamentos / w.recebidas * 100).toFixed(1) : '0')}% das Mensagens Recebidas</span>
+                <div class="step-split">
+                    <span class="step-split-item"><span class="label"><i class="fa-regular fa-user"></i> Humano</span><span class="value">${w.agendHumano}</span></span>
+                    <span class="step-split-item"><span class="label"><i class="fa-regular fa-robot"></i> Chatbot</span><span class="value">${w.agendBot}</span></span>
+                </div>
+            ` }
+        ];
+
+        const iconMap = {
+            'recebidas':'fa-regular fa-inbox',
+            'consulta':'fa-regular fa-stethoscope',
+            'exame':'fa-regular fa-flask',
+            'odonto':'fa-regular fa-tooth',
+            'outros':'fa-regular fa-tag',
+            'agendamento':'fa-regular fa-calendar-check'
+        };
+
+        container.innerHTML = steps.map(s => {
+            const percent = Math.min(s.percent, 100);
+            return `
+                <div class="funnel-step">
+                    <div class="step-icon ${s.icon}"><i class="${iconMap[s.icon]}"></i></div>
+                    <div class="step-info">
+                        <div class="step-label">${s.label}</div>
+                        <div class="step-value">${s.value.toLocaleString('pt-BR')}</div>
+                        ${s.extra || ''}
+                        <div class="step-bar"><div class="bar-fill ${s.barClass}" style="width:${percent}%;"></div></div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+// ============================================================
+// RENDERIZAÇÃO DO FUNIL VOZ (com chamadas clicáveis)
+// ============================================================
+function renderizarFunilVoz(containerId, dados, mes) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const v = dados.voz;
+    const totalAgendamentos = v.agendamentos || 0;
+    const pctConsulta = totalAgendamentos > 0 ? (v.agendaConsultas / totalAgendamentos * 100) : 0;
+    const pctExame    = totalAgendamentos > 0 ? (v.agendaExames    / totalAgendamentos * 100) : 0;
+    const pctOdonto   = totalAgendamentos > 0 ? (v.agendaOdonto    / totalAgendamentos * 100) : 0;
+
+    // Busca as ligações direto do bloco voz
+    const ligacoes1515 = v.ligacoes1515 || 0;
+    const ligacoes6080 = v.ligacoes6080 || 0;
+
+    const steps = [
+        { 
+            label: 'Chamadas Recebidas', 
+            value: v.recebidas, 
+            icon: 'phone-recebidas', 
+            barClass: 'cyan', 
+            percent: 100,
+            clickable: true,
+            ligacoes1515: ligacoes1515,
+            ligacoes6080: ligacoes6080
+        },
+        { label: 'Atendidos', value: v.atendidas, icon: 'phone-atendidas', barClass: 'blue', percent: (v.recebidas > 0 ? (v.atendidas / v.recebidas * 100) : 0), extra: `<span class="step-percent">${(v.recebidas > 0 ? (v.atendidas / v.recebidas * 100).toFixed(1) : '0')}% das Chamadas Recebidas</span>` },
+        { label: 'Agendamentos (total)', value: totalAgendamentos, icon: 'phone-agendamentos', barClass: 'purple', percent: (v.atendidas > 0 ? (totalAgendamentos / v.atendidas * 100) : 0), extra: `<span class="step-percent">${(v.atendidas > 0 ? (totalAgendamentos / v.atendidas * 100).toFixed(1) : '0')}% dos Atendidos</span>` },
+        { label: 'Agendamentos Consulta', value: v.agendaConsultas || 0, icon: 'phone-consulta', barClass: 'green', percent: pctConsulta, extra: `<span class="step-percent">${pctConsulta.toFixed(1)}% do total de Agendamentos</span>` },
+        { label: 'Agendamentos Exames', value: v.agendaExames || 0, icon: 'phone-exame', barClass: 'amber', percent: pctExame, extra: `<span class="step-percent">${pctExame.toFixed(1)}% do total de Agendamentos</span>` },
+        { label: 'Agendamentos Odonto', value: v.agendaOdonto || 0, icon: 'phone-odonto', barClass: 'red', percent: pctOdonto, extra: `<span class="step-percent">${pctOdonto.toFixed(1)}% do total de Agendamentos</span>` },
+        { label: 'Perda', value: v.perda, icon: 'phone-perda', barClass: 'red', percent: (v.recebidas > 0 ? (v.perda / v.recebidas * 100) : 0), extra: `
+            <span class="step-percent">${(v.recebidas > 0 ? (v.perda / v.recebidas * 100).toFixed(1) : '0')}% das Chamadas Recebidas</span>
+        ` }
+    ];
+
+    const iconMap = {
+        'phone-recebidas':'fa-solid fa-phone-volume',
+        'phone-atendidas':'fa-solid fa-headset',
+        'phone-agendamentos':'fa-regular fa-calendar-check',
+        'phone-consulta':'fa-regular fa-stethoscope',
+        'phone-exame':'fa-regular fa-flask',
+        'phone-odonto':'fa-regular fa-tooth',
+        'phone-perda':'fa-solid fa-circle-xmark'
+    };
+
+    container.innerHTML = steps.map((s, index) => {
+        const percent = Math.min(s.percent, 100);
+        
+        // Se for o primeiro (Chamadas Recebidas), monta com detalhes expansíveis
+        if (index === 0) {
+            return `
+                <div class="funnel-step voice-step" onclick="toggleChamadas(this, '${mes}')">
+                    <div class="step-main">
+                        <div class="step-icon ${s.icon}"><i class="${iconMap[s.icon]}"></i></div>
+                        <div class="step-info">
+                            <div class="step-label">${s.label}</div>
+                            <div class="step-value">${s.value.toLocaleString('pt-BR')}</div>
+                            <span class="click-hint"><i class="fa-regular fa-hand-pointer"></i> Clique para ver detalhes</span>
+                            <div class="step-bar"><div class="bar-fill ${s.barClass}" style="width:${percent}%;"></div></div>
+                        </div>
+                    </div>
+                    <div class="chamadas-detalhes" id="detalhes-${mes}-${containerId}">
+                        <div class="detalhe-item">
+                            <span class="label"><i class="fa-regular fa-building"></i> Ligações 1515</span>
+                            <span class="value">${s.ligacoes1515.toLocaleString('pt-BR')}</span>
+                        </div>
+                        <div class="detalhe-item">
+                            <span class="label"><i class="fa-regular fa-clock"></i> Ligações 6080</span>
+                            <span class="value">${s.ligacoes6080.toLocaleString('pt-BR')}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        return `
+            <div class="funnel-step voice-step">
+                <div class="step-icon ${s.icon}"><i class="${iconMap[s.icon]}"></i></div>
+                <div class="step-info">
+                    <div class="step-label">${s.label}</div>
+                    <div class="step-value">${s.value.toLocaleString('pt-BR')}</div>
+                    ${s.extra || ''}
+                    <div class="step-bar"><div class="bar-fill ${s.barClass}" style="width:${percent}%;"></div></div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+    // ============================================================
+    // TOGGLE DOS DETALHES (função global)
+    // ============================================================
+    function toggleChamadas(element, mes) {
+        const detalhes = element.querySelector('.chamadas-detalhes');
+        if (detalhes) {
+            detalhes.classList.toggle('open');
+        }
+    }
+
+    // ============================================================
+    // ATUALIZAÇÃO DE UM PAINEL ESPECÍFICO
+    // ============================================================
+    function atualizarPainel(tipo, panelIndex, mes) {
+        const dados = dadosMensais[mes];
+        if (!dados) {
+            const zero = {
+                whats: {
+                    base: 0,
+                    enviadas: 0,
+                    recebidas: 0,
+                    consultas: 0,
+                    exames: 0,
+                    odonto: 0,
+                    outros: 0,
+                    agendamentos: 0,
+                    agendHumano: 0,
+                    agendBot: 0
+                },
+                voz: {
+                    recebidas: 0,
+                    atendidas: 0,
+                    perda: 0,
+                    agendamentos: 0,
+                    agendaConsultas: 0,
+                    agendaExames: 0,
+                    agendaOdonto: 0,
+                    ligacoes1515: 0,
+                    ligacoes6080: 0
+                }
+            };
+            if (tipo === 'whats') {
+                renderizarFunilWhats(`whatsappFunnel${panelIndex}`, zero, panelIndex);
+                document.getElementById(`whatsTitle${panelIndex}`).textContent = nomeMes(mes) + ' (sem dados)';
+            } else {
+                renderizarFunilVoz(`vozFunnel${panelIndex}`, zero, mes);
+                document.getElementById(`vozTitle${panelIndex}`).textContent = nomeMes(mes) + ' (sem dados)';
+            }
+            return;
+        }
+
+        if (tipo === 'whats') {
+            renderizarFunilWhats(`whatsappFunnel${panelIndex}`, dados, panelIndex);
+            document.getElementById(`whatsTitle${panelIndex}`).textContent = nomeMes(mes);
+        } else {
+            renderizarFunilVoz(`vozFunnel${panelIndex}`, dados, mes);
+            document.getElementById(`vozTitle${panelIndex}`).textContent = nomeMes(mes);
+        }
+    }
+
+    // ============================================================
+    // FUNÇÃO PARA EXIBIR DATA/HORA FIXA (SUBSTITUÍDA PELO PYTHON)
+    // ============================================================
+    function atualizarDataAtualizacao() {
+        // Esta função será sobrescrita pelo script Python com a data/hora da execução.
+        // O Python substituirá o conteúdo do <strong id="ultimaAtualizacao">.
+        // Portanto, esta função não faz nada para evitar conflito.
+        // O rodapé já terá a data fixa inserida diretamente no HTML.
+    }
+
+    // ============================================================
+    // INICIALIZAÇÃO E EVENTOS
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        // Abas
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+        // Não chama mais atualizarDataAtualizacao() para não sobrescrever a data fixa
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                const target = document.getElementById('tab-' + this.dataset.tab);
+                if (target) target.classList.add('active');
+            });
+        });
+
+        // Seletores
+        const wm1 = document.getElementById('whatsMonth1');
+        const wm2 = document.getElementById('whatsMonth2');
+        const vm1 = document.getElementById('vozMonth1');
+        const vm2 = document.getElementById('vozMonth2');
+
+        function setupSelector(selector, tipo, index) {
+            selector.addEventListener('change', function() {
+                const mes = this.value;
+                if (mes) atualizarPainel(tipo, index, mes);
+            });
+        }
+
+        setupSelector(wm1, 'whats', 1);
+        setupSelector(wm2, 'whats', 2);
+        setupSelector(vm1, 'voz', 1);
+        setupSelector(vm2, 'voz', 2);
+
+        // Renderização inicial
+        atualizarPainel('whats', 1, '2026-06');
+        atualizarPainel('whats', 2, '2026-07');
+        atualizarPainel('voz', 1, '2026-06');
+        atualizarPainel('voz', 2, '2026-07');
+    });
+</script>
+
+</body>
+</html>
