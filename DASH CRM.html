@@ -1,0 +1,2058 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM - Case de Sucesso</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* ===== RESET E BASE ===== */
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
+        body { background:#f2f6fc; min-height:100vh; display:flex; }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width:65px;
+            background:#0a2e4a;
+            color:white;
+            display:flex;
+            flex-direction:column;
+            min-height:100vh;
+            flex-shrink:0;
+            position:sticky;
+            top:0;
+            height:100vh;
+            overflow-y:auto;
+        }
+        .sidebar-logo {
+            padding:24px 12px;
+            border-bottom:1px solid rgba(255,255,255,0.08);
+            display:flex;
+            align-items:center;
+            gap:12px;
+        }
+        .sidebar-logo img {
+            height:30px;
+            width:auto;
+        }
+        .sidebar-logo span {
+            font-weight:700;
+            font-size:18px;
+            letter-spacing:-0.5px;
+            color:white;
+        }
+        .sidebar-menu {
+            padding:16px 12px;
+            flex:1;
+        }
+        .sidebar-menu .menu-item {
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:12px 16px;
+            border-radius:10px;
+            color:rgba(255,255,255,0.7);
+            font-weight:500;
+            font-size:14px;
+            cursor:pointer;
+            transition:all .2s ease;
+            margin-bottom:4px;
+            text-decoration:none;
+        }
+        .sidebar-menu .menu-item:hover {
+            background:rgba(255,255,255,0.08);
+            color:white;
+        }
+        .sidebar-menu .menu-item.active {
+            background:#0a5a8c;
+            color:white;
+        }
+        .sidebar-menu .menu-item i {
+            width:20px;
+            font-size:16px;
+            text-align:center;
+        }
+
+        /* ===== CONTEÚDO PRINCIPAL ===== */
+        .main-content {
+            flex:1;
+            padding:24px;
+            min-width:0;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            flex-wrap:wrap;
+            gap:16px;
+            margin-bottom:28px;
+        }
+        .header-left h1 {
+            font-size:28px;
+            font-weight:700;
+            color:#0a2e4a;
+            letter-spacing:-0.5px;
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+        .header-left h1 img { height:32px; width:auto; }
+        .header-left p { color:#5e6f88; font-size:14px; font-weight:500; margin-top:2px; }
+        .header-actions {
+            display:flex;
+            gap:12px;
+            align-items:center;
+            flex-wrap:wrap;
+        }
+
+        .btn {
+            padding:10px 20px;
+            border:none;
+            border-radius:40px;
+            font-weight:600;
+            font-size:13px;
+            cursor:pointer;
+            transition:all .25s ease;
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+        }
+        .btn-primary { background:#0a5a8c; color:white; }
+        .btn-primary:hover { background:#084b75; transform:translateY(-2px); box-shadow:0 8px 16px rgba(10,90,140,0.2); }
+        .btn-success { background:#0f973d; color:white; }
+        .btn-success:hover { background:#0d7e32; transform:translateY(-2px); box-shadow:0 8px 16px rgba(15,151,61,0.2); }
+        .btn-doc { background:#6c3cb0; color:white; }
+        .btn-doc:hover { background:#5a2e94; transform:translateY(-2px); box-shadow:0 8px 16px rgba(108,60,176,0.2); }
+        .btn-secondary { background:#e2e8f0; color:#1e293b; }
+        .btn-secondary:hover { background:#cbd5e1; }
+
+        /* ===== CONTEÚDO DAS PÁGINAS ===== */
+        .page {
+            display:none;
+        }
+        .page.active {
+            display:block;
+        }
+
+        /* ===== IMPORTAR PACIENTES ===== */
+        .import-area {
+            background:white;
+            border-radius:16px;
+            border:1px solid #edf2f7;
+            padding:40px;
+            max-width:600px;
+            margin:0 auto;
+            text-align:center;
+        }
+        .import-area h2 {
+            font-size:22px;
+            color:#0a2e4a;
+            margin-bottom:8px;
+        }
+        .import-area p {
+            color:#64748b;
+            font-size:14px;
+            margin-bottom:24px;
+        }
+        .import-area .upload-group {
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+            margin-bottom:20px;
+        }
+        .import-area .upload-row {
+            display:flex;
+            align-items:center;
+            gap:12px;
+            background:#f8fafc;
+            padding:8px 16px;
+            border-radius:40px;
+            border:1px solid #e2e8f0;
+        }
+        .import-area .upload-row i { color:#0a5a8c; font-size:16px; }
+        .import-area .upload-row input[type="file"] {
+            border:none;
+            padding:6px 0;
+            font-size:13px;
+            background:transparent;
+            flex:1;
+            outline:none;
+        }
+        .import-area .btn-group {
+            display:flex;
+            gap:12px;
+            justify-content:center;
+            flex-wrap:wrap;
+        }
+
+        /* ===== ESTATÍSTICAS E GRÁFICOS ===== */
+        .stats-grid { display:grid; grid-template-columns:1fr 2fr; gap:16px; margin-bottom:28px; }
+        .stats-cards { display:grid; grid-template-columns:repeat(6,1fr); gap:12px; }
+        .stat-card { background:white; padding:14px 16px; border-radius:16px; border:1px solid #edf2f7; display:flex; align-items:center; gap:12px; }
+        .stat-icon { width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:18px; }
+        .stat-icon.blue { background:#e0edf9; color:#0a5a8c; }
+        .stat-icon.green { background:#e1f5e8; color:#0f973d; }
+        .stat-icon.purple { background:#ede7f6; color:#6c3cb0; }
+        .stat-icon.orange { background:#fef3e2; color:#c76b1c; }
+        .stat-icon.teal { background:#e0f2f1; color:#00695c; }
+        .stat-icon.red { background:#fde8e8; color:#b91c1c; }
+        .stat-info h3 { font-size:20px; font-weight:700; color:#0a2e4a; line-height:1.2; }
+        .stat-info p { font-size:12px; color:#64748b; font-weight:500; }
+        @media (max-width:768px){ .stats-grid { grid-template-columns:1fr; } .stats-cards { grid-template-columns:repeat(3,1fr); } }
+        @media (max-width:480px){ .stats-cards { grid-template-columns:1fr 1fr; } }
+
+        .health-chart { background:white; border-radius:16px; border:1px solid #edf2f7; padding:16px 20px; display:flex; flex-direction:column; justify-content:center; }
+        .health-chart h4 { font-size:13px; font-weight:600; color:#1e293b; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+        .chart-bars { display:flex; flex-direction:column; gap:6px; }
+        .chart-bar { display:flex; align-items:center; gap:8px; font-size:12px; }
+        .chart-bar .label { width:85px; font-weight:500; color:#1e293b; flex-shrink:0; cursor:help; }
+        .chart-bar .bar-track { flex:1; height:8px; background:#e9eef2; border-radius:20px; overflow:hidden; position:relative; }
+        .chart-bar .bar-fill { height:100%; border-radius:20px; transition:width 0.6s ease; width:0%; }
+        .chart-bar .bar-fill.saudavel { background:#0f973d; }
+        .chart-bar .bar-fill.atencao { background:#f2b705; }
+        .chart-bar .bar-fill.alerta { background:#dc3545; }
+        .chart-bar .count { width:30px; text-align:right; font-weight:600; color:#1e293b; }
+
+        /* ===== FILTROS ===== */
+        .filters-bar { background:white; padding:16px 20px; border-radius:16px; border:1px solid #edf2f7; margin-bottom:24px; display:flex; flex-wrap:wrap; align-items:center; gap:14px 20px; }
+        .filter-group { display:flex; align-items:center; gap:6px; background:#f8fafc; padding:4px 12px 4px 8px; border-radius:40px; border:1px solid #e2e8f0; flex:1 0 200px; position:relative; }
+        .filter-group i { color:#94a3b8; font-size:14px; }
+        .filter-group input, .filter-group select { border:none; background:transparent; padding:8px 4px; font-size:13px; width:100%; outline:none; color:#1e293b; }
+        .filter-group input[type="month"] { min-width:120px; }
+        .filter-group:focus-within { border-color:#0a5a8c; box-shadow:0 0 0 3px rgba(10,90,140,0.1); }
+
+        .idade-dropdown-toggle {
+            cursor:pointer;
+            flex:1;
+            padding:8px 4px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:8px;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+        }
+        .idade-dropdown-toggle .label-text { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#1e293b; font-size:13px; }
+        .idade-dropdown-toggle .arrow { font-size:12px; color:#94a3b8; }
+        .idade-dropdown-panel {
+            display:none;
+            position:absolute;
+            top:calc(100% + 4px);
+            left:0;
+            right:0;
+            background:white;
+            border:1px solid #e2e8f0;
+            border-radius:12px;
+            padding:8px 12px;
+            max-height:240px;
+            overflow-y:auto;
+            z-index:1000;
+            box-shadow:0 12px 30px rgba(0,0,0,0.1);
+            min-width:200px;
+        }
+        .idade-dropdown-panel.open { display:block; }
+        .idade-dropdown-panel .header-actions { display:flex; justify-content:space-between; gap:8px; margin-bottom:8px; font-size:12px; }
+        .idade-dropdown-panel .header-actions button { background:#f1f5f9; border:none; padding:4px 10px; border-radius:20px; cursor:pointer; font-size:11px; font-weight:600; color:#475569; transition:0.2s; }
+        .idade-dropdown-panel .header-actions button:hover { background:#e2e8f0; }
+        .idade-checkbox-item { display:flex; align-items:center; gap:8px; padding:4px 0; font-size:13px; color:#1e293b; cursor:pointer; }
+        .idade-checkbox-item input[type="checkbox"] { width:16px; height:16px; accent-color:#0a5a8c; cursor:pointer; }
+        .idade-checkbox-item:hover { background:#f8fafc; }
+
+        .btn-clear { background:#f1f5f9; color:#475569; padding:8px 16px; border-radius:40px; border:1px solid #e2e8f0; font-size:12px; font-weight:600; cursor:pointer; transition:0.2s; }
+        .btn-clear:hover { background:#e2e8f0; }
+
+        /* ===== PROGRESS ===== */
+        .progress-container { width:100%; background:#e9eef2; border-radius:20px; height:8px; margin:8px 0; overflow:hidden; display:none; }
+        .progress-container.active { display:block; }
+        .progress-bar { height:100%; background:#0a5a8c; width:0%; transition:width 0.3s; border-radius:20px; }
+        .progress-text { font-size:12px; color:#64748b; display:block; margin-top:4px; }
+
+        /* ===== VIEW TOGGLE ===== */
+        .view-toggle { display:flex; gap:4px; background:#f1f5f9; padding:4px; border-radius:40px; margin-bottom:20px; }
+        .view-toggle button { padding:6px 18px; border:none; background:transparent; border-radius:30px; font-size:13px; font-weight:600; color:#475569; cursor:pointer; transition:0.2s; display:flex; align-items:center; gap:6px; }
+        .view-toggle button.active { background:white; color:#0a5a8c; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+
+        /* ===== TABELA E CARDS ===== */
+        .table-wrapper { background:white; border-radius:16px; border:1px solid #edf2f7; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.03); display:none; }
+        .table-wrapper.active { display:block; }
+        table { width:100%; border-collapse:collapse; font-size:13px; }
+        table thead { background:#f8fafc; border-bottom:2px solid #e2e8f0; }
+        table th { padding:14px 16px; text-align:left; font-weight:600; color:#334155; font-size:12px; text-transform:uppercase; letter-spacing:0.3px; cursor:pointer; white-space:nowrap; }
+        table th i { margin-left:4px; opacity:0.5; }
+        table td { padding:14px 16px; border-bottom:1px solid #f1f5f9; color:#1e293b; vertical-align:middle; }
+        table tbody tr:hover { background:#f8fafc; }
+        .badge-paciente { padding:4px 12px; border-radius:30px; font-size:11px; font-weight:600; }
+        .badge-titular { background:#e0edf9; color:#0a5a8c; }
+        .badge-dependente { background:#f1e6f9; color:#6c3cb0; }
+        .badge-events { background:#0a5a8c10; color:#0a5a8c; font-weight:700; padding:4px 10px; border-radius:30px; font-size:13px; }
+        .btn-detail { background:#0a5a8c; color:white; border:none; padding:5px 14px; border-radius:30px; font-size:12px; font-weight:600; cursor:pointer; transition:0.2s; }
+        .btn-detail:hover { background:#084b75; }
+
+        /* ===== BADGE DE RETORNO ===== */
+        .badge-retorno { display:inline-block; padding:2px 10px; border-radius:30px; font-size:11px; font-weight:600; margin-left:6px; }
+        .badge-retorno.retorno-3meses { background:#d4edda; color:#155724; }
+        .badge-retorno.retorno-9meses { background:#cce5ff; color:#004085; }
+        .badge-retorno.retorno-1ano { background:#ffe5d0; color:#cc7a2b; }
+        .badge-retorno.retorno-mais1ano { background:#f8d7da; color:#721c24; }
+        .badge-retorno.retorno-nunca { background:#e2e3e5; color:#383d41; }
+
+        /* ===== BARRINHA DE STATUS ===== */
+        .status-bar { display:inline-block; width:4px; height:1em; border-radius:3px; margin-right:6px; vertical-align:middle; }
+        .status-bar.saudavel { background:#0f973d; }
+        .status-bar.atencao { background:#f2b705; }
+        .status-bar.alerta { background:#dc3545; }
+
+        /* ===== CARDS ===== */
+        .card-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; display:none; }
+        .card-grid.active { display:grid; }
+        .patient-card { background:white; border-radius:16px; border:1px solid #edf2f7; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.03); transition:all .25s ease; cursor:pointer; position:relative; overflow:hidden; }
+        .patient-card:hover { transform:translateY(-6px); box-shadow:0 12px 30px rgba(10,90,140,0.08); border-color:#cbd5e1; }
+        .card-status-bar { height:6px; width:100%; border-radius:4px 4px 0 0; margin:-20px -20px 12px -20px; width:calc(100% + 40px); }
+        .card-status-bar.saudavel { background:#0f973d; animation:glow-saudavel 2.5s infinite ease-in-out; }
+        .card-status-bar.atencao { background:#f2b705; }
+        .card-status-bar.alerta { background:#dc3545; animation:pulse-alerta 1.2s infinite ease-in-out; }
+        .card-header { display:flex; align-items:center; gap:14px; margin-bottom:12px; }
+        .card-avatar { width:50px; height:50px; border-radius:14px; background:#e0edf9; color:#0a5a8c; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:18px; flex-shrink:0; }
+        .card-header-info h4 { font-size:16px; font-weight:600; color:#0a2e4a; display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+        .card-header-info h4 .status-bar { display:inline-block; width:4px; height:1.2em; border-radius:3px; margin-right:6px; vertical-align:middle; }
+        .card-header-info h4 .status-bar.saudavel { background:#0f973d; }
+        .card-header-info h4 .status-bar.atencao { background:#f2b705; }
+        .card-header-info h4 .status-bar.alerta { background:#dc3545; }
+        .card-body { display:flex; justify-content:space-between; align-items:center; border-top:1px solid #f1f5f9; padding-top:14px; margin-top:4px; }
+        .card-body .stats-mini span { display:block; font-size:13px; color:#1e293b; }
+        .card-body .stats-mini small { color:#94a3b8; font-size:11px; }
+        .card-arrow { color:#94a3b8; transition:0.2s; }
+        .patient-card:hover .card-arrow { color:#0a5a8c; transform:translateX(4px); }
+
+        @keyframes pulse-alerta { 0% { background-color:#dc3545; box-shadow:0 0 5px #dc3545; } 50% { background-color:#a71d2a; box-shadow:0 0 25px #dc3545; } 100% { background-color:#dc3545; box-shadow:0 0 5px #dc3545; } }
+        @keyframes glow-saudavel { 0% { box-shadow:0 0 2px #0f973d; } 50% { box-shadow:0 0 10px #0f973d; } 100% { box-shadow:0 0 2px #0f973d; } }
+
+        /* ===== PAGINAÇÃO ===== */
+        .pagination { display:flex; justify-content:center; align-items:center; gap:8px; padding:16px 0; flex-wrap:wrap; }
+        .pagination button { padding:6px 14px; border:1px solid #e2e8f0; background:white; border-radius:8px; font-size:13px; cursor:pointer; transition:0.2s; color:#1e293b; }
+        .pagination button:hover:not(:disabled) { background:#f1f5f9; }
+        .pagination button.active { background:#0a5a8c; color:white; border-color:#0a5a8c; }
+        .pagination button:disabled { opacity:0.5; cursor:default; }
+        .pagination .info { font-size:13px; color:#64748b; padding:0 12px; }
+
+        /* ===== MODAIS ===== */
+        .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.6); backdrop-filter:blur(4px); z-index:1000; justify-content:center; align-items:center; padding:24px; animation:fadeIn 0.3s ease; }
+        .modal-overlay.active { display:flex; }
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+        @keyframes slideUp { from { transform:translateY(30px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+        .modal-box { background:white; max-width:1000px; width:100%; max-height:90vh; border-radius:24px; overflow:hidden; animation:slideUp 0.35s ease; display:flex; flex-direction:column; }
+        .modal-header { padding:20px 24px; background:#f8fafc; border-bottom:1px solid #edf2f7; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+        .modal-user { display:flex; align-items:center; gap:16px; }
+        .modal-user .avatar-lg { width:56px; height:56px; border-radius:16px; background:#0a5a8c; color:white; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:700; flex-shrink:0; }
+        .modal-user .info h2 { font-size:20px; color:#0a2e4a; }
+        .modal-user .info .status-extra { font-size:13px; color:#64748b; }
+        .modal-close-btn { background:#f1f5f9; border:none; width:40px; height:40px; border-radius:40px; font-size:18px; cursor:pointer; transition:0.2s; display:flex; align-items:center; justify-content:center; color:#475569; }
+        .modal-close-btn:hover { background:#e2e8f0; }
+
+        .modal-attributes { display:flex; flex-wrap:wrap; gap:8px 12px; padding:16px 24px; background:white; border-bottom:1px solid #f1f5f9; }
+        .attr-block { background:#f8fafc; border:1px solid #e9eef2; border-radius:30px; padding:4px 14px; font-size:13px; color:#1e293b; display:inline-flex; align-items:center; gap:6px; }
+        .attr-block i { color:#0a5a8c; width:16px; font-size:13px; }
+        .attr-block strong { font-weight:600; }
+
+        .modal-finance-blocks { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; padding:16px 24px; background:white; border-bottom:1px solid #f1f5f9; }
+        .finance-block { text-align:center; padding:8px 0; }
+        .finance-block .value { display:block; font-size:20px; font-weight:700; color:#0a2e4a; }
+        .finance-block .label { font-size:11px; color:#64748b; font-weight:500; text-transform:uppercase; letter-spacing:0.3px; }
+        .finance-block.highlight .value { color:#0f973d; }
+        .finance-block.discount .value { color:#dc3545; }
+
+        .modal-body { padding:20px 24px 24px; overflow-y:auto; flex:1; }
+        .modal-body h3 { font-size:16px; color:#0a2e4a; margin-bottom:16px; font-weight:600; display:flex; align-items:center; gap:8px; }
+        .modal-body h4 { font-size:14px; color:#0a2e4a; margin:16px 0 8px; font-weight:600; display:flex; align-items:center; gap:8px; }
+
+        .timeline { position:relative; padding-left:28px; }
+        .timeline::before { content:''; position:absolute; left:6px; top:4px; bottom:4px; width:2px; background:#e2e8f0; }
+        .timeline-item { position:relative; margin-bottom:20px; padding-left:16px; }
+        .timeline-item::before { content:''; position:absolute; left:-24px; top:4px; width:12px; height:12px; border-radius:12px; background:#0a5a8c; border:3px solid white; box-shadow:0 0 0 2px #0a5a8c; }
+        .timeline-item.assinatura::before { background:#f2b705; box-shadow:0 0 0 2px #f2b705; }
+        .timeline-item.email::before { background:#8b5cf6; box-shadow:0 0 0 2px #8b5cf6; }
+        .timeline-item.telemedicina::before { background:#0a5a8c; box-shadow:0 0 0 2px #0a5a8c; }
+        .timeline-item.app::before { background:#00695c; box-shadow:0 0 0 2px #00695c; }
+        .timeline-item .time { font-size:12px; color:#94a3b8; font-weight:500; display:flex; gap:12px; flex-wrap:wrap; margin-bottom:2px; }
+        .timeline-item .time strong { color:#1e293b; }
+        .timeline-item .desc { font-size:14px; color:#1e293b; background:#f8fafc; padding:8px 14px; border-radius:10px; display:inline-block; border:1px solid #f1f5f9; }
+        .timeline-item .desc .tag { background:#e2e8f0; padding:1px 8px; border-radius:20px; font-size:11px; font-weight:600; margin-left:6px; }
+        .timeline-item.assinatura .desc { background:#fef9e7; border-color:#f2b70540; }
+        .timeline-item.email .desc { background:#ede9fe; border-color:#8b5cf640; }
+        .timeline-item.telemedicina .desc { background:#e0edf9; border-color:#0a5a8c40; }
+        .timeline-item.app .desc { background:#e0f2f1; border-color:#00695c40; }
+
+        .dependentes-list { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+        .dependente-chip { background:#f1f5f9; border-radius:30px; padding:4px 14px; font-size:13px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; transition:0.2s; border:1px solid #e2e8f0; }
+        .dependente-chip:hover { background:#e2e8f0; transform:translateY(-1px); border-color:#0a5a8c; }
+        .dependente-chip .status-dot { width:10px; height:10px; border-width:1px; margin-left:0; cursor:help; }
+        .dependente-chip .consultou-tag { font-size:11px; font-weight:600; padding:1px 6px; border-radius:30px; }
+        .dependente-chip .consultou-tag.sim { background:#e1f5e8; color:#0f973d; }
+        .dependente-chip .consultou-tag.nao { background:#fee2e2; color:#dc3545; }
+
+        .modal-export { text-align:right; padding:8px 24px 20px; border-top:1px solid #f1f5f9; }
+        .empty-state { text-align:center; padding:60px 20px; color:#94a3b8; }
+        .empty-state i { font-size:48px; margin-bottom:16px; color:#cbd5e1; }
+
+        /* ===== DOCUMENTAÇÃO MODAL ===== */
+        .doc-content { padding:8px 0; line-height:1.7; color:#1e293b; }
+        .doc-content h2 { font-size:18px; color:#0a2e4a; margin:20px 0 8px; border-bottom:2px solid #e2e8f0; padding-bottom:6px; }
+        .doc-content h3 { font-size:15px; color:#0a2e4a; margin:16px 0 4px; }
+        .doc-content ul { padding-left:24px; margin:4px 0 12px; }
+        .doc-content li { margin-bottom:4px; }
+        .doc-content .highlight-box { background:#f8fafc; border-left:4px solid #0a5a8c; padding:12px 16px; border-radius:6px; margin:12px 0; }
+        .doc-content .tag-example { display:inline-block; padding:2px 10px; border-radius:30px; font-size:12px; font-weight:600; margin:0 4px; }
+        .doc-content .tag-3m { background:#d4edda; color:#155724; }
+        .doc-content .tag-9m { background:#cce5ff; color:#004085; }
+        .doc-content .tag-1a { background:#ffe5d0; color:#cc7a2b; }
+        .doc-content .tag-mais1a { background:#f8d7da; color:#721c24; }
+        .doc-content .tag-nunca { background:#e2e3e5; color:#383d41; }
+        .doc-content .status-dot-example { display:inline-block; width:12px; height:12px; border-radius:12px; margin-right:6px; vertical-align:middle; }
+        .doc-content .status-dot-example.saudavel { background:#0f973d; }
+        .doc-content .status-dot-example.atencao { background:#f2b705; }
+        .doc-content .status-dot-example.alerta { background:#dc3545; }
+
+        /* ===== KANBAN (GRUPOS) ===== */
+        .kanban-container {
+            display:grid;
+            grid-template-columns: 1fr 1fr;
+            gap:24px;
+            margin-top:20px;
+        }
+        .kanban-column {
+            background:#f8fafc;
+            border-radius:16px;
+            padding:16px;
+            border:2px dashed #e2e8f0;
+            min-height:300px;
+            transition:all .3s ease;
+        }
+        .kanban-column h3 {
+            font-size:16px;
+            font-weight:600;
+            color:#0a2e4a;
+            margin-bottom:16px;
+            display:flex;
+            align-items:center;
+            gap:8px;
+        }
+        .kanban-column h3 i {
+            color:#0a5a8c;
+        }
+        .kanban-column.drag-over {
+            border-color:#0a5a8c;
+            background:#e8f0fe;
+        }
+        .kanban-column .empty-placeholder {
+            color:#94a3b8;
+            text-align:center;
+            padding:40px 20px;
+            font-size:14px;
+        }
+        #gruposAtivosContainer,
+        #gruposBandejaContainer {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        #gruposAtivosContainer .empty-placeholder,
+        #gruposBandejaContainer .empty-placeholder {
+            grid-column: 1 / -1;
+        }
+        .grupo-card {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid #edf2f7;
+            padding: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            transition: all 0.25s ease;
+            cursor: grab;
+            display: flex;
+            flex-direction: column;
+            aspect-ratio: 1 / 1;
+            min-height: 160px;
+            max-height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+        .grupo-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(10,90,140,0.10);
+            border-color: #cbd5e1;
+        }
+        .grupo-card:active {
+            cursor: grabbing;
+        }
+        .grupo-card .grupo-icone {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+        .grupo-card .grupo-icone.azul { background: #e0edf9; color: #0a5a8c; }
+        .grupo-card .grupo-icone.verde { background: #e1f5e8; color: #0f973d; }
+        .grupo-card .grupo-icone.roxo { background: #ede7f6; color: #6c3cb0; }
+        .grupo-card .grupo-icone.laranja { background: #fef3e2; color: #c76b1c; }
+        .grupo-card .grupo-icone.rosa { background: #fce4ec; color: #c62828; }
+        .grupo-card .grupo-header {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-height: 0;
+        }
+        .grupo-card .grupo-header h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: #0a2e4a;
+            margin: 0;
+            line-height: 1.2;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .grupo-card .grupo-header .badge-count {
+            display: inline-block;
+            background: #f1f5f9;
+            padding: 1px 10px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #475569;
+            align-self: flex-start;
+        }
+        .grupo-card .grupo-footer {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .grupo-card .grupo-footer .jornada-tag {
+            padding: 1px 10px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        .grupo-card .grupo-footer .jornada-tag.aguardando {
+            background: #fef3e2;
+            color: #c76b1c;
+        }
+        .grupo-card .grupo-footer .jornada-tag.atribuida {
+            background: #d4edda;
+            color: #155724;
+        }
+        .grupo-card .grupo-footer .jornada-tag .fa-check {
+            margin-right: 3px;
+        }
+        .grupo-card .grupo-footer .qtd-pacientes {
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+        .grupo-card .grupo-actions {
+            display: flex;
+            gap: 2px;
+            margin-top: 6px;
+            justify-content: flex-end;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 6px;
+        }
+        .grupo-card .grupo-actions button {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: 0.2s;
+            padding: 4px 6px;
+            border-radius: 6px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .grupo-card .grupo-actions button:hover {
+            background: #f1f5f9;
+            color: #0a5a8c;
+        }
+        .grupo-card .grupo-actions button .label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+        .grupo-card .grupo-actions .btn-mover { color: #0a5a8c; }
+        .grupo-card .grupo-actions .btn-voltar { color: #c76b1c; }
+        .grupo-card .grupo-actions .btn-ver { color: #6c3cb0; }
+        .grupo-card .grupo-actions .btn-exportar { color: #0f973d; }
+        .grupo-card .grupo-actions .btn-disparar { color: #dc3545; }
+
+        /* Modal de escolha de jornada */
+        .jornada-list {
+            display:flex;
+            flex-direction:column;
+            gap:8px;
+            padding:8px 0;
+        }
+        .jornada-item {
+            padding:12px 16px;
+            border:1px solid #e2e8f0;
+            border-radius:10px;
+            cursor:pointer;
+            transition:all .2s ease;
+            display:flex;
+            align-items:center;
+            gap:12px;
+        }
+        .jornada-item:hover {
+            background:#f8fafc;
+            border-color:#0a5a8c;
+        }
+        .jornada-item i {
+            color:#0a5a8c;
+            font-size:18px;
+            width:24px;
+            text-align:center;
+        }
+        .jornada-item .jornada-nome {
+            font-weight:500;
+            color:#1e293b;
+            flex:1;
+        }
+        .jornada-item .jornada-desc {
+            font-size:12px;
+            color:#94a3b8;
+        }
+
+        @media (max-width:768px) {
+            .kanban-container {
+                grid-template-columns:1fr;
+            }
+            .filters-bar .filter-group {
+                flex: 1 0 100%;
+            }
+        }
+        .emoji-consulta { font-size:12px; margin-left:6px; color:#64748b; letter-spacing:1px; }
+        .status-dot { display:inline-block; width:12px; height:12px; border-radius:50%; border:2px solid white; box-shadow:0 0 0 2px #ccc; margin-right:4px; }
+        .status-dot.saudavel { background:#0f973d; box-shadow:0 0 0 2px #0f973d; }
+        .status-dot.atencao { background:#f2b705; box-shadow:0 0 0 2px #f2b705; }
+        .status-dot.alerta { background:#dc3545; box-shadow:0 0 0 2px #dc3545; }
+    </style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar">
+    <div class="sidebar-logo">
+        <img src="https://raw.githubusercontent.com/gabrielmachado514/PROJETOS-514GABRIEL/main/de86a894-db24-46bd-adcd-7982d746dfad.jpg" alt="CRM">
+        <span></span>
+    </div>
+    <div class="sidebar-menu">
+        <div class="menu-item active" data-page="geral" onclick="mudarPagina('geral')">
+            <i class="fas fa-chart-pie"></i>
+            <span></span>
+        </div>
+        <div class="menu-item" data-page="importar" onclick="mudarPagina('importar')">
+            <i class="fas fa-upload"></i>
+            <span></span>
+        </div>
+        <div class="menu-item" data-page="grupos" onclick="mudarPagina('grupos')">
+            <i class="fas fa-users"></i>
+            <span></span>
+        </div>
+    </div>
+</div>
+
+<!-- ===== CONTEÚDO PRINCIPAL ===== -->
+<div class="main-content">
+
+    <!-- ===== PÁGINA GERAL ===== -->
+    <div class="page active" id="page-geral">
+        <div class="header">
+            <div class="header-left">
+                <h1>Painel de Gestão</h1>
+                <p><i class="fas fa-database" style="margin-right:6px;"></i> Visão geral dos pacientes e eventos</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-doc" onclick="abrirDocumentacao()"><i class="fas fa-book"></i> 📘 Regras</button>
+                <button class="btn btn-primary" onclick="criarGrupo()"><i class="fas fa-plus"></i> Criar grupo de segmentação</button>
+                <button class="btn btn-success" onclick="exportarCSV()"><i class="fas fa-file-export"></i> Exportar</button>
+            </div>
+        </div>
+
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+            <span class="progress-text" id="progressText"></span>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+            <div class="stats-cards">
+                <div class="stat-card"><div class="stat-icon blue"><i class="fas fa-users"></i></div><div class="stat-info"><h3 id="totalPacientes">0</h3><p>Pacientes</p></div></div>
+                <div class="stat-card"><div class="stat-icon purple"><i class="fas fa-user-tie"></i></div><div class="stat-info"><h3 id="totalTitulares">0</h3><p>Titulares</p></div></div>
+                <div class="stat-card"><div class="stat-icon orange"><i class="fas fa-user-friends"></i></div><div class="stat-info"><h3 id="totalDependentes">0</h3><p>Dependentes</p></div></div>
+                <div class="stat-card"><div class="stat-icon green"><i class="fas fa-calendar-check"></i></div><div class="stat-info"><h3 id="totalConsultas">0</h3><p>Consultas (presenciais)</p></div></div>
+                <div class="stat-card"><div class="stat-icon purple"><i class="fas fa-video"></i></div><div class="stat-info"><h3 id="totalTelemedicina">0</h3><p>Telemedicinas</p></div></div>
+                <div class="stat-card"><div class="stat-icon teal"><i class="fas fa-mobile-alt"></i></div><div class="stat-info"><h3 id="totalApps">0</h3><p>Acessos ao APP</p></div></div>
+                <div class="stat-card"><div class="stat-icon red"><i class="fas fa-clock"></i></div><div class="stat-info"><h3 id="totalRetorno">0%</h3><p>Retorno em 3 meses</p></div></div>
+            </div>
+            <div class="health-chart" id="healthChart">
+                <h4 style="display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <i class="fas fa-heartbeat" style="color:#0a5a8c;"></i> 
+                    Distribuição por status de saúde 
+                    <span style="font-size:11px;font-weight:400;color:#64748b;">(presencial + telemedicina)</span>
+                    <span style="margin-left:auto; font-weight:700; color:#0a2e4a; background:#f1f5f9; padding:4px 12px; border-radius:20px;">
+                        Total: <span id="totalSaude">0</span>
+                    </span>
+                </h4>
+                <div class="chart-bars" id="chartBars"></div>
+            </div>
+        </div>
+
+        <div class="filters-bar">
+            <div class="filter-group"><i class="fas fa-search"></i><input type="text" id="filtroBusca" placeholder="Buscar por nome ou código..." oninput="aplicarFiltros()"></div>
+            <div class="filter-group" id="idadeFilterGroup">
+                <i class="fas fa-calendar-alt"></i>
+                <div class="idade-dropdown-toggle" onclick="toggleIdadeDropdown()">
+                    <span class="label-text" id="idadeLabel">Todas as idades</span>
+                    <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="idade-dropdown-panel" id="idadeDropdownPanel">
+                    <div class="header-actions">
+                        <button onclick="selecionarTodasIdades()">Selecionar todas</button>
+                        <button onclick="limparIdades()">Limpar</button>
+                    </div>
+                    <div id="idadeCheckboxContainer"></div>
+                </div>
+            </div>
+            <div class="filter-group"><i class="fas fa-venus-mars"></i><select id="filtroSexo" onchange="aplicarFiltros()"><option value="">Todos</option><option value="Masculino">Masculino</option><option value="Feminino">Feminino</option></select></div>
+            <div class="filter-group"><i class="fas fa-heartbeat"></i><select id="filtroStatus" onchange="aplicarFiltros()"><option value="">Todos os status</option><option value="saudavel">🟢 Saudável</option><option value="atencao">🟡 Atenção</option><option value="alerta">🔴 Alerta</option></select></div>
+            <div class="filter-group"><i class="fas fa-users"></i><select id="filtroDependentes" onchange="aplicarFiltros()"><option value="">Familiar com dependentes</option><option value="0">0 dependentes</option><option value="1">1 dependente</option><option value="2">2 dependentes</option><option value="3">3 dependentes</option></select></div>
+            <div class="filter-group" id="utilizacaoFilterGroup">
+                <i class="fas fa-filter"></i>
+                <div class="idade-dropdown-toggle" onclick="toggleUtilizacaoDropdown()">
+                    <span class="label-text" id="utilizacaoLabel">Todas as utilizações</span>
+                    <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="idade-dropdown-panel" id="utilizacaoDropdownPanel">
+                    <div class="header-actions">
+                        <button onclick="selecionarTodasUtilizacoes()">Selecionar todas</button>
+                        <button onclick="limparUtilizacoes()">Limpar</button>
+                    </div>
+                    <label class="idade-checkbox-item">
+                        <input type="checkbox" value="presencial" onchange="atualizarLabelUtilizacao(); aplicarFiltros();">
+                        <span>🩺 Consulta (presencial)</span>
+                    </label>
+                    <label class="idade-checkbox-item">
+                        <input type="checkbox" value="online" onchange="atualizarLabelUtilizacao(); aplicarFiltros();">
+                        <span>💻 Telemedicina</span>
+                    </label>
+                    <label class="idade-checkbox-item">
+                        <input type="checkbox" value="app" onchange="atualizarLabelUtilizacao(); aplicarFiltros();">
+                        <span>📱 App</span>
+                    </label>
+                    <div style="margin-top:8px; border-top:1px solid #e2e8f0; padding-top:8px;">
+                        <label class="idade-checkbox-item">
+                            <input type="checkbox" id="filtroUtilizacaoInverter" onchange="atualizarLabelUtilizacao(); aplicarFiltros();">
+                            <span>Inverter seleção (filtrar quem NÃO tem)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-group"><i class="fas fa-clock"></i><select id="filtroRetorno" onchange="aplicarFiltros()"><option value="">Taxa de retorno</option><option value="3 meses">3 meses</option><option value="9 meses">9 meses</option><option value="1 ano">1 ano</option><option value="Mais de 1 ano">Mais de 1 ano</option></select></div>
+
+            <!-- NOVO FILTRO: DATA DE ASSINATURA -->
+            <div class="filter-group">
+                <i class="fas fa-calendar-plus"></i>
+                <input type="month" id="filtroDataAssinatura" onchange="aplicarFiltros()" style="padding:8px 4px; border:none; background:transparent; outline:none; width:100%; font-size:13px; color:#1e293b;">
+            </div>
+
+            <!-- NOVO FILTRO: PLANO (Individual / Familiar) -->
+            <div class="filter-group">
+                <i class="fas fa-id-card"></i>
+                <select id="filtroPlano" onchange="aplicarFiltros()">
+                    <option value="">Todos os planos</option>
+                    <option value="Individual">Individual</option>
+                    <option value="Familiar">Familiar</option>
+                </select>
+            </div>
+
+            <div class="filters-actions"><button class="btn-clear" onclick="limparFiltros()"><i class="fas fa-times"></i> Limpar</button></div>
+        </div>
+
+        <div class="view-toggle">
+            <button class="active" id="btnTableView" onclick="toggleView('table')"><i class="fas fa-table"></i> Tabela</button>
+            <button id="btnCardView" onclick="toggleView('card')"><i class="fas fa-th-large"></i> Cards</button>
+        </div>
+
+        <div class="table-wrapper active" id="tableView">
+            <table>
+                <thead><tr><th onclick="ordenar('PACIENTE_NOME')">Paciente <i class="fas fa-sort"></i></th><th onclick="ordenar('COD_PACIENTE')">Código <i class="fas fa-sort"></i></th><th onclick="ordenar('TIPO_PACIENTE')">Tipo <i class="fas fa-sort"></i></th><th onclick="ordenar('ULTIMO_ATENDIMENTO')">Último Atendimento <i class="fas fa-sort"></i></th><th onclick="ordenar('TOTAL_CONSULTAS')">Consultas <i class="fas fa-sort"></i></th><th>Total pago</th><th>Ações</th></tr></thead>
+                <tbody id="corpoTabela"><tr><td colspan="7" class="empty-state"><i class="fas fa-cloud-upload-alt"></i><h3>Carregue os pacientes</h3><p>Vá em "Importar Pacientes" na barra lateral</p></td></tr></tbody>
+            </table>
+            <div class="pagination" id="paginationTable"></div>
+        </div>
+
+        <div class="card-grid" id="cardView"></div>
+        <div class="pagination" id="paginationCards"></div>
+    </div>
+
+    <!-- ===== PÁGINA IMPORTAR PACIENTES ===== -->
+    <div class="page" id="page-importar">
+        <div class="import-area">
+            <h2><i class="fas fa-upload" style="color:#0a5a8c; margin-right:10px;"></i>Importar Pacientes</h2>
+            <p>Selecione os arquivos CSV de resumo e eventos para carregar os dados.</p>
+            <div class="upload-group">
+                <div class="upload-row">
+                    <i class="fas fa-file-alt"></i>
+                    <input type="file" id="fileInputResumo" accept=".csv">
+                    <span style="font-size:11px;color:#64748b;margin-left:4px;">Resumo</span>
+                </div>
+                <div class="upload-row">
+                    <i class="fas fa-file-alt" style="color:#8b5cf6;"></i>
+                    <input type="file" id="fileInputEventos" accept=".csv">
+                    <span style="font-size:11px;color:#64748b;margin-left:4px;">Eventos</span>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="carregarDados()"><i class="fas fa-play"></i> Carregar</button>
+                <button class="btn btn-success" onclick="exportarCSV()"><i class="fas fa-file-export"></i> Exportar</button>
+            </div>
+            <p style="margin-top:16px; font-size:12px; color:#94a3b8;">
+                <i class="fas fa-info-circle"></i> O resumo deve conter os dados consolidados dos pacientes.
+            </p>
+        </div>
+    </div>
+
+    <!-- ===== PÁGINA GRUPOS ===== -->
+    <div class="page" id="page-grupos">
+        <div class="header">
+            <div class="header-left">
+                <h1>Grupos de Segmentação</h1>
+                <p>Organize seus grupos e atribua jornadas de CRM</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="mudarPagina('geral')"><i class="fas fa-arrow-left"></i> Voltar para filtros</button>
+            </div>
+        </div>
+
+        <div class="kanban-container" id="kanbanContainer">
+            <div class="kanban-column" id="colunaGrupos">
+                <h3><i class="fas fa-list"></i> Meus Grupos</h3>
+                <div id="gruposAtivosContainer">
+                    <div class="empty-placeholder">Nenhum grupo criado ainda.</div>
+                </div>
+            </div>
+            <div class="kanban-column" id="colunaBandeja" ondragover="onDragOver(event)" ondrop="onDrop(event)">
+                <h3><i class="fas fa-archive"></i> Bandeja <span style="font-size:12px;font-weight:400;color:#64748b;">(solte um grupo aqui)</span></h3>
+                <div id="gruposBandejaContainer">
+                    <div class="empty-placeholder">Arraste um grupo para atribuir uma jornada</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ===== MODAL DETALHES PACIENTE ===== -->
+<div class="modal-overlay" id="modalDetalhes">
+    <div class="modal-box">
+        <div class="modal-header">
+            <div class="modal-user"><div class="avatar-lg" id="modalAvatar">N</div><div class="info"><h2 id="modalNome">Nome</h2><div class="status-extra" id="modalStatusExtra"></div></div></div>
+            <button class="modal-close-btn" onclick="fecharModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-attributes" id="modalAttributes"></div>
+        <div class="modal-finance-blocks">
+            <div class="finance-block"><span class="value" id="modalTotalEventos">0</span><span class="label">Consultas</span></div>
+            <div class="finance-block"><span class="value" id="modalTotalFaturado">R$ 0</span><span class="label">Faturado</span></div>
+            <div class="finance-block highlight"><span class="value" id="modalTotalPago">R$ 0</span><span class="label">Total Pago</span></div>
+            <div class="finance-block discount"><span class="value" id="modalTotalDesconto">R$ 0</span><span class="label">Desconto</span></div>
+        </div>
+        <div class="modal-body">
+            <h3><i class="fas fa-history" style="color:#0a5a8c;"></i> Linha do tempo</h3>
+            <div id="timelineContainer"><div class="empty-state" style="padding:20px;"><i class="fas fa-info-circle"></i><p>Carregue o arquivo de eventos para ver o histórico completo.</p></div></div>
+            <h4><i class="fas fa-users" style="color:#0a5a8c;"></i> Dependentes</h4>
+            <div id="dependentesContainer"><p style="color:#94a3b8;font-size:13px;">Nenhum dependente.</p></div>
+        </div>
+        <div class="modal-export"><button class="btn btn-success" onclick="exportarEventosPaciente()"><i class="fas fa-download"></i> Exportar eventos (CSV)</button></div>
+    </div>
+</div>
+
+<!-- ===== MODAL DOCUMENTAÇÃO ===== -->
+<div class="modal-overlay" id="modalDocumentacao">
+    <div class="modal-box" style="max-width:800px;">
+        <div class="modal-header">
+            <div class="modal-user">
+                <div class="avatar-lg" style="background:#6c3cb0;"><i class="fas fa-book" style="font-size:24px;"></i></div>
+                <div class="info"><h2>📘 Regras de Negócio</h2><div class="status-extra">Como cada métrica é calculada</div></div>
+            </div>
+            <button class="modal-close-btn" onclick="fecharDocumentacao()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" style="overflow-y:auto;">
+            <div class="doc-content">
+                <div class="highlight-box">
+                    <strong>📌 Resumo rápido:</strong><br>
+                    • <strong>Status de saúde</strong> – mede o tempo desde o <strong>último atendimento</strong> (presencial OU telemedicina DRC), usando a data mais recente entre os dois.<br>
+                    • <strong>Taxa de retorno (badges)</strong> – mede o tempo desde a <strong>última consulta presencial</strong> (coluna <code>CATEGORIA_RETORNO</code> do CSV resumo).<br>
+                    • <strong>Emojis</strong> (🩺, 💻, 📱) – indicam se o paciente já usou cada canal <strong>após a assinatura</strong> (dados do arquivo de eventos).<br>
+                    • <strong>Regra extra:</strong> Quem fez telemedicina DRC (<strong>💻</strong>) automaticamente tem o app baixado (<strong>📱</strong>).
+                </div>
+                <h2>📂 Origem dos dados</h2>
+                <ul>
+                    <li><strong>Resumo (CSV)</strong> – gerado pela query SQL. Contém uma linha por paciente com dados consolidados: última consulta presencial, total de consultas, total pago, categoria de retorno, etc.</li>
+                    <li><strong>Eventos (CSV)</strong> – arquivo com todos os eventos individuais: consultas presenciais, telemedicina DRC, acessos ao app, envios de e-mail, etc.</li>
+                </ul>
+                <h2>🩺 Status de saúde</h2>
+                <ul>
+                    <li><strong>O que mede:</strong> Tempo desde o <strong>último atendimento</strong> (presencial OU telemedicina DRC).</li>
+                    <li><strong>Fonte:</strong> Combinação da <code>ULTIMA_CONSULTA</code> (presencial, do resumo) com a data da última telemedicina DRC (do arquivo de eventos) – usa a <strong>mais recente</strong>.</li>
+                    <li><strong>Regra (em meses):</strong>
+                        <ul>
+                            <li><span class="status-dot-example saudavel"></span> <strong>Saudável</strong> – ≤ 3 meses</li>
+                            <li><span class="status-dot-example atencao"></span> <strong>Atenção</strong> – > 3 e ≤ 9 meses</li>
+                            <li><span class="status-dot-example alerta"></span> <strong>Alerta</strong> – > 9 meses ou nunca teve atendimento</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h2>🏷️ Taxa de retorno (badges)</h2>
+                <ul>
+                    <li><strong>O que mede:</strong> Tempo desde a <strong>última consulta presencial</strong>.</li>
+                    <li><strong>Fonte:</strong> Coluna <code>CATEGORIA_RETORNO</code> do CSV resumo.</li>
+                    <li><strong>Regra (dias):</strong>
+                        <ul>
+                            <li><span class="tag-example tag-3m">3 meses</span> – ≤ 90 dias</li>
+                            <li><span class="tag-example tag-9m">9 meses</span> – > 90 e ≤ 270 dias</li>
+                            <li><span class="tag-example tag-1a">1 ano</span> – > 270 e ≤ 365 dias</li>
+                            <li><span class="tag-example tag-mais1a">Mais de 1 ano</span> – > 365 dias</li>
+                            <li><span class="tag-example tag-nunca">Nunca consultou</span></li>
+                        </ul>
+                    </li>
+                </ul>
+                <h2>📱 Emojis de utilização (🩺 💻 📱)</h2>
+                <ul>
+                    <li><strong>O que indicam:</strong> Canais que o paciente já utilizou <strong>após a assinatura</strong>.</li>
+                    <li><strong>Regras:</strong>
+                        <ul>
+                            <li><strong>🩺</strong> – consulta presencial após assinatura.</li>
+                            <li><strong>💻</strong> – telemedicina DRC após assinatura.</li>
+                            <li><strong>📱</strong> – app após assinatura <strong>OU</strong> se tiver telemedicina (💻 → 📱 automático).</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="highlight-box" style="border-left-color:#f2b705; background:#fffdf0;">
+                    <strong>🔍 Diferença importante:</strong><br>
+                    • <strong>Status de saúde</strong> → presencial + telemedicina.<br>
+                    • <strong>Taxa de retorno</strong> → apenas presencial.<br>
+                    • <strong>Emojis</strong> → mostram canais usados após assinatura.
+                </div>
+            </div>
+        </div>
+        <div class="modal-export" style="border-top:1px solid #f1f5f9; padding:12px 24px; text-align:right;">
+            <button class="btn btn-primary" onclick="fecharDocumentacao()"><i class="fas fa-check"></i> Entendi</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MODAL ESCOLHA DE JORNADA ===== -->
+<div class="modal-overlay" id="modalEscolhaJornada">
+    <div class="modal-box" style="max-width:600px;">
+        <div class="modal-header">
+            <div class="modal-user">
+                <div class="avatar-lg" style="background:#6c3cb0;"><i class="fas fa-road" style="font-size:24px;"></i></div>
+                <div class="info"><h2>Escolha a Jornada de CRM</h2><div class="status-extra" id="jornadaGrupoInfo">Selecione uma jornada para o grupo</div></div>
+            </div>
+            <button class="modal-close-btn" onclick="fecharModalJornada()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="jornada-list" id="jornadaListContainer">
+                <!-- preenchido via JS -->
+            </div>
+        </div>
+        <div class="modal-export" style="border-top:1px solid #f1f5f9; padding:12px 24px; text-align:right;">
+            <button class="btn btn-secondary" onclick="fecharModalJornada()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ======== GLOBALS ========
+    let pacientes = {}, listaPacientes = [], dadosFiltrados = [], eventosPorPaciente = null, mapaDependentes = new Map();
+    let ordemAtual = {coluna:'PACIENTE_NOME',direcao:'asc'}, viewAtual='table', pacienteAtual=null, carregandoEventos=false;
+    const ITENS_POR_PAGINA = 50;
+    let paginaAtual = 1, totalPaginas = 1;
+
+    // ======== GRUPOS E JORNADAS ========
+    let grupos = [];
+    let grupoArrastadoIndex = null;
+    const JORNADAS = [
+        { id: 'boas-vindas', nome: 'Boas-vindas', icone: 'fa-hand-wave', desc: 'Primeiro contato com a marca' },
+        { id: 'reativacao', nome: 'Reativação', icone: 'fa-sync', desc: 'Pacientes que não consultam há tempos' },
+        { id: 'newsletter', nome: 'Newsletter', icone: 'fa-newspaper', desc: 'Envio de conteúdo informativo' },
+        { id: 'oferta-especial', nome: 'Oferta especial', icone: 'fa-tag', desc: 'Promoções e descontos' },
+        { id: 'pesquisa-satisfacao', nome: 'Pesquisa de satisfação', icone: 'fa-smile', desc: 'Coletar feedback dos pacientes' },
+        { id: 'agendamento', nome: 'Agendamento', icone: 'fa-calendar-check', desc: 'Lembretes e agendamento' },
+        { id: 'educacao-saude', nome: 'Educação em saúde', icone: 'fa-graduation-cap', desc: 'Conteúdo educativo' },
+    ];
+
+    // ======== NAVEGAÇÃO ========
+    function mudarPagina(pagina) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('page-' + pagina).classList.add('active');
+        document.querySelectorAll('.sidebar-menu .menu-item').forEach(item => item.classList.remove('active'));
+        document.querySelector(`.sidebar-menu .menu-item[data-page="${pagina}"]`).classList.add('active');
+        if (pagina === 'grupos') renderizarGrupos();
+    }
+
+    // ======== DOCUMENTAÇÃO ========
+    function abrirDocumentacao(){ document.getElementById('modalDocumentacao').classList.add('active'); document.body.style.overflow='hidden'; }
+    function fecharDocumentacao(){ document.getElementById('modalDocumentacao').classList.remove('active'); document.body.style.overflow=''; }
+    document.getElementById('modalDocumentacao').addEventListener('click', function(e){ if(e.target===this) fecharDocumentacao(); });
+
+    // ======== AUXILIARES ========
+    function parseDate(str){
+        if(!str) return null;
+        let parts = str.split('/');
+        if(parts.length===3){ let d=parseInt(parts[0]), m=parseInt(parts[1])-1, a=parseInt(parts[2]); if(a<100)a+=2000; if(!isNaN(d)&&!isNaN(m)&&!isNaN(a)) return new Date(a,m,d); }
+        parts = str.split('-');
+        if(parts.length===3){ let a=parseInt(parts[0]), m=parseInt(parts[1])-1, d=parseInt(parts[2]); if(!isNaN(d)&&!isNaN(m)&&!isNaN(a)) return new Date(a,m,d); }
+        if(str.length === 7 && str.includes('-')) {
+            let [a, m] = str.split('-').map(Number);
+            if(!isNaN(a) && !isNaN(m) && m>=1 && m<=12) return new Date(a, m-1, 1);
+        }
+        return null;
+    }
+    function formatDateToBR(date){ if(!date) return ''; const d=new Date(date); return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear(); }
+    function getPlanoNome(cod){ const map={'1':'Individual','4':'Familiar'}; return map[cod]||''; }
+
+    function calcularSaude(p){
+        const hoje = new Date();
+        let ultimaData = null;
+        if(p.ultimoAtendimentoGeral){ 
+            const d = parseDate(p.ultimoAtendimentoGeral); 
+            if(d) ultimaData = d; 
+        }
+        if(!ultimaData) {
+            return { status:'alerta', label:'Alerta', cor:'#dc3545', tooltip:'Nunca consultou (nem presencial, nem telemedicina).' };
+        }
+        const diffMeses = (hoje.getFullYear() - ultimaData.getFullYear()) * 12 + (hoje.getMonth() - ultimaData.getMonth());
+        const meses = Math.max(0, diffMeses);
+        if(meses <= 3) {
+            return { status:'saudavel', label:'Saudável', cor:'#0f973d', tooltip:`Último atendimento (presencial ou telemedicina) há ${meses} meses.` };
+        } else if(meses <= 9) {
+            return { status:'atencao', label:'Atenção', cor:'#f2b705', tooltip:`Último atendimento (presencial ou telemedicina) há ${meses} meses.` };
+        } else {
+            return { status:'alerta', label:'Alerta', cor:'#dc3545', tooltip:`Último atendimento (presencial ou telemedicina) há ${meses} meses.` };
+        }
+    }
+
+    function consultouAposAssinatura(p){ if(!p.dataCad) return false; const ass=parseDate(p.dataCad); if(!ass) return false; if(!p.ultimaConsulta) return false; const ult=parseDate(p.ultimaConsulta); if(!ult) return false; return ult>ass; }
+
+    // ======== CARREGAR DADOS (substituído por dados embutidos) ========
+    // A função carregarDados() mantida para compatibilidade, mas agora usamos gerarDadosExemplo() no DOMContentLoaded
+
+    // ======== GERAR DADOS EXEMPLO ========
+    function gerarDadosExemplo() {
+        const nomesTitulares = [
+            'Ana Silva', 'Carlos Souza', 'Mariana Oliveira', 'José Santos', 'Fernanda Lima',
+            'Rafael Almeida', 'Juliana Costa', 'Paulo Ferreira', 'Camila Rodrigues', 'Lucas Pereira'
+        ];
+        const sobrenomes = ['Silva', 'Souza', 'Oliveira', 'Santos', 'Lima', 'Almeida', 'Costa', 'Ferreira', 'Rodrigues', 'Pereira'];
+        const nomesDep = ['João', 'Maria', 'Pedro', 'Ana', 'Luiz', 'Carla', 'Marcos', 'Rita', 'Bruno', 'Cláudia',
+                          'Felipe', 'Renata', 'Gustavo', 'Patrícia', 'André', 'Simone', 'Diego', 'Aline', 'Caio', 'Vanessa'];
+
+        const pacientesObj = {};
+        const dependentesMap = new Map();
+        const eventosMap = new Map();
+
+        // Função para gerar CPF fictício (formato XXX.XXX.XXX-XX)
+        function gerarCPF() {
+            let n = '';
+            for (let i=0; i<9; i++) n += Math.floor(Math.random()*10);
+            let d1 = 0, d2 = 0;
+            for (let i=0; i<9; i++) d1 += parseInt(n[i]) * (10 - i);
+            d1 = (d1 * 10) % 11;
+            if (d1 === 10) d1 = 0;
+            for (let i=0; i<9; i++) d2 += parseInt(n[i]) * (11 - i);
+            d2 += d1 * 2;
+            d2 = (d2 * 10) % 11;
+            if (d2 === 10) d2 = 0;
+            return n.slice(0,3)+'.'+n.slice(3,6)+'.'+n.slice(6,9)+'-'+d1+d2;
+        }
+
+        // Seed fixa para reprodutibilidade
+        let seed = 12345;
+        function rand() {
+            seed = (seed * 9301 + 49297) % 233280;
+            return seed / 233280;
+        }
+
+        // Gerar 10 titulares
+        for (let i=0; i<10; i++) {
+            const cod = String(i+1);
+            const nome = nomesTitulares[i];
+            const sexo = i%2===0 ? 'Feminino' : 'Masculino';
+            const idade = 25 + Math.floor(rand()*45);
+            const anoNasc = new Date().getFullYear() - idade;
+            const mesNasc = 1 + Math.floor(rand()*12);
+            const diaNasc = 1 + Math.floor(rand()*28);
+            const nasc = `${String(diaNasc).padStart(2,'0')}/${String(mesNasc).padStart(2,'0')}/${anoNasc}`;
+            const dataCad = new Date();
+            dataCad.setMonth(dataCad.getMonth() - (12 + Math.floor(rand()*24))); // entre 1 e 2 anos atrás
+            const dataCadStr = formatDateToBR(dataCad);
+            const codPlano = rand() > 0.4 ? '4' : '1'; // 60% familiar
+            const planoNome = getPlanoNome(codPlano);
+            const totalConsultas = 1 + Math.floor(rand()*8);
+            const totalPago = totalConsultas * (80 + Math.floor(rand()*60));
+
+            // Última consulta presencial: entre 0 e 15 meses atrás
+            let ultConsulta = null;
+            let ultConsultaDate = new Date();
+            ultConsultaDate.setMonth(ultConsultaDate.getMonth() - Math.floor(rand()*15));
+            ultConsulta = formatDateToBR(ultConsultaDate);
+
+            // Categoria de retorno
+            const diffDias = Math.floor((new Date() - ultConsultaDate) / (1000*60*60*24));
+            let catRetorno = '';
+            if (diffDias <= 90) catRetorno = '3 meses';
+            else if (diffDias <= 270) catRetorno = '9 meses';
+            else if (diffDias <= 365) catRetorno = '1 ano';
+            else if (diffDias > 365 && diffDias < 10000) catRetorno = 'Mais de 1 ano';
+            else catRetorno = 'Nunca consultou';
+
+            const paciente = {
+                cod_paciente: cod,
+                nome: nome,
+                cpf: gerarCPF(),
+                tipo: 'TITULAR',
+                telefone: `(11) 9${String(8000 + Math.floor(rand()*9999))}`,
+                email: nome.toLowerCase().replace(' ', '.') + '@email.com',
+                nasc: nasc,
+                idade: String(idade),
+                sexo: sexo,
+                dataCad: dataCadStr,
+                codTitular: cod,
+                codPlano: codPlano,
+                nomePlano: planoNome,
+                totalConsultas: totalConsultas,
+                totalPago: totalPago,
+                ultimaConsulta: ultConsulta,
+                ultimoAtendimentoGeral: ultConsulta,
+                ultimaTelemedicina: null,
+                qtdeDependentes: 0,
+                diasSemConsulta: diffDias,
+                categoriaRetorno: catRetorno,
+                possuiPresencial: false,
+                possuiOnline: false,
+                possuiApp: false,
+                ultimoAcessoApp: null,
+                totalTelemedicina: 0
+            };
+            pacientesObj[cod] = paciente;
+        }
+
+        // Gerar dependentes: cada titular terá 4 dependentes
+        let depIndex = 0;
+        for (let i=1; i<=10; i++) {
+            const codTitular = String(i);
+            const titular = pacientesObj[codTitular];
+            if (!titular) continue;
+            const qtd = 4;
+            titular.qtdeDependentes = qtd;
+            const dependentes = [];
+            for (let d=0; d<qtd; d++) {
+                depIndex++;
+                const codDep = String(50 + depIndex); // códigos 51..90
+                const nome = nomesDep[(depIndex-1) % nomesDep.length] + ' ' + sobrenomes[Math.floor(rand()*sobrenomes.length)];
+                const sexoDep = d%2===0 ? 'Feminino' : 'Masculino';
+                const idadeDep = 5 + Math.floor(rand()*35);
+                const anoNascDep = new Date().getFullYear() - idadeDep;
+                const mesNascDep = 1 + Math.floor(rand()*12);
+                const diaNascDep = 1 + Math.floor(rand()*28);
+                const nascDep = `${String(diaNascDep).padStart(2,'0')}/${String(mesNascDep).padStart(2,'0')}/${anoNascDep}`;
+                const dataCadDep = parseDate(titular.dataCad);
+                const dataCadDepStr = formatDateToBR(dataCadDep);
+                const totalConsultasDep = Math.floor(rand()*3);
+                const totalPagoDep = totalConsultasDep * (80 + Math.floor(rand()*60));
+
+                let ultConsultaDepDate = new Date();
+                ultConsultaDepDate.setMonth(ultConsultaDepDate.getMonth() - Math.floor(rand()*18));
+                const ultConsultaDep = formatDateToBR(ultConsultaDepDate);
+                const diffDiasDep = Math.floor((new Date() - ultConsultaDepDate) / (1000*60*60*24));
+                let catRetornoDep = '';
+                if (diffDiasDep <= 90) catRetornoDep = '3 meses';
+                else if (diffDiasDep <= 270) catRetornoDep = '9 meses';
+                else if (diffDiasDep <= 365) catRetornoDep = '1 ano';
+                else if (diffDiasDep > 365) catRetornoDep = 'Mais de 1 ano';
+                else catRetornoDep = 'Nunca consultou';
+
+                const dep = {
+                    cod_paciente: codDep,
+                    nome: nome,
+                    cpf: gerarCPF(),
+                    tipo: 'DEPENDENTE',
+                    telefone: `(11) 9${String(7000 + Math.floor(rand()*9999))}`,
+                    email: nome.toLowerCase().replace(' ', '.') + '@email.com',
+                    nasc: nascDep,
+                    idade: String(idadeDep),
+                    sexo: sexoDep,
+                    dataCad: dataCadDepStr,
+                    codTitular: codTitular,
+                    codPlano: titular.codPlano,
+                    nomePlano: titular.nomePlano,
+                    totalConsultas: totalConsultasDep,
+                    totalPago: totalPagoDep,
+                    ultimaConsulta: ultConsultaDep,
+                    ultimoAtendimentoGeral: ultConsultaDep,
+                    ultimaTelemedicina: null,
+                    qtdeDependentes: 0,
+                    diasSemConsulta: diffDiasDep,
+                    categoriaRetorno: catRetornoDep,
+                    possuiPresencial: false,
+                    possuiOnline: false,
+                    possuiApp: false,
+                    ultimoAcessoApp: null,
+                    totalTelemedicina: 0
+                };
+                pacientesObj[codDep] = dep;
+                dependentes.push(dep);
+            }
+            dependentesMap.set(codTitular, dependentes);
+        }
+
+        // Agora gerar eventos para cada paciente (com base nos dados já criados)
+        const tipoEventos = ['CONSULTA', 'Telemedicina DRC', 'ACESSO APP', 'EMAIL'];
+        const especialidades = ['Cardiologia', 'Ortopedia', 'Dermatologia', 'Ginecologia', 'Pediatria', 'Clínica Geral'];
+        const exames = ['Raio-X', 'Ultrassom', 'Mamografia', 'Ressonância', 'Tomografia', ''];
+        const assuntosEmail = ['Boletim de saúde', 'Lembrete de consulta', 'Oferta especial', 'Pesquisa de satisfação'];
+
+        for (const [cod, p] of Object.entries(pacientesObj)) {
+            const eventos = [];
+            const dataAssinatura = parseDate(p.dataCad);
+            if (!dataAssinatura) continue;
+
+            // Gerar consultas presenciais (algumas)
+            const numConsultas = p.totalConsultas > 0 ? p.totalConsultas : 0;
+            for (let c=0; c<numConsultas; c++) {
+                const dataEvento = new Date(dataAssinatura);
+                dataEvento.setMonth(dataEvento.getMonth() + Math.floor(rand()*18) + 1);
+                if (dataEvento > new Date()) continue;
+                const valorAg = 80 + Math.floor(rand()*60);
+                const valorPag = valorAg * (0.7 + rand()*0.3);
+                eventos.push({
+                    dataConsulta: formatDateToBR(dataEvento),
+                    hora: `${String(8+Math.floor(rand()*10)).padStart(2,'0')}:${String(Math.floor(rand()*60)).padStart(2,'0')}`,
+                    especialidade: especialidades[Math.floor(rand()*especialidades.length)],
+                    exame: exames[Math.floor(rand()*exames.length)],
+                    tipoGuia: 'CONSULTA',
+                    valorAg: Math.round(valorAg),
+                    valorPag: Math.round(valorPag),
+                    desconto: Math.round(valorAg - valorPag),
+                    tipoEvento: 'CONSULTA',
+                    assuntoEmail: '',
+                    codTitular: p.codTitular || cod
+                });
+            }
+
+            // Telemedicina DRC (30% dos pacientes)
+            if (rand() < 0.3) {
+                const numTele = 1 + Math.floor(rand()*2);
+                for (let t=0; t<numTele; t++) {
+                    const dataEvento = new Date(dataAssinatura);
+                    dataEvento.setMonth(dataEvento.getMonth() + Math.floor(rand()*14) + 1);
+                    if (dataEvento > new Date()) continue;
+                    const valorAg = 120 + Math.floor(rand()*50);
+                    eventos.push({
+                        dataConsulta: formatDateToBR(dataEvento),
+                        hora: `${String(8+Math.floor(rand()*10)).padStart(2,'0')}:${String(Math.floor(rand()*60)).padStart(2,'0')}`,
+                        especialidade: especialidades[Math.floor(rand()*especialidades.length)],
+                        exame: '',
+                        tipoGuia: 'TELEMEDICINA',
+                        valorAg: Math.round(valorAg),
+                        valorPag: Math.round(valorAg * 0.9),
+                        desconto: Math.round(valorAg * 0.1),
+                        tipoEvento: 'Telemedicina DRC',
+                        assuntoEmail: '',
+                        codTitular: p.codTitular || cod
+                    });
+                }
+            }
+
+            // Acessos APP (40% dos pacientes)
+            if (rand() < 0.4) {
+                const numApp = 1 + Math.floor(rand()*5);
+                for (let a=0; a<numApp; a++) {
+                    const dataEvento = new Date(dataAssinatura);
+                    dataEvento.setMonth(dataEvento.getMonth() + Math.floor(rand()*16) + 1);
+                    if (dataEvento > new Date()) continue;
+                    eventos.push({
+                        dataConsulta: formatDateToBR(dataEvento),
+                        hora: `${String(8+Math.floor(rand()*10)).padStart(2,'0')}:${String(Math.floor(rand()*60)).padStart(2,'0')}`,
+                        especialidade: '',
+                        exame: '',
+                        tipoGuia: 'APP',
+                        valorAg: 0,
+                        valorPag: 0,
+                        desconto: 0,
+                        tipoEvento: 'ACESSO APP',
+                        assuntoEmail: '',
+                        codTitular: p.codTitular || cod
+                    });
+                }
+            }
+
+            // Emails (20% dos pacientes)
+            if (rand() < 0.2) {
+                eventos.push({
+                    dataConsulta: formatDateToBR(new Date(dataAssinatura.getTime() + 30*24*60*60*1000)),
+                    hora: '12:00',
+                    especialidade: '',
+                    exame: '',
+                    tipoGuia: 'EMAIL',
+                    valorAg: 0,
+                    valorPag: 0,
+                    desconto: 0,
+                    tipoEvento: 'EMAIL',
+                    assuntoEmail: assuntosEmail[Math.floor(rand()*assuntosEmail.length)],
+                    codTitular: p.codTitular || cod
+                });
+            }
+
+            // Ordenar eventos por data
+            eventos.sort((a,b) => {
+                const da = parseDate(a.dataConsulta);
+                const db = parseDate(b.dataConsulta);
+                if (da && db) return da - db;
+                return 0;
+            });
+
+            // Atualizar flags no paciente baseado nos eventos (após assinatura)
+            let possuiPresencial = false, possuiOnline = false, possuiApp = false;
+            let ultimaTelemedicinaDate = null;
+            let totalTelemedicina = 0;
+            let ultimoAcessoAppDate = null;
+            const dataAss = parseDate(p.dataCad);
+
+            for (const ev of eventos) {
+                const dataEv = parseDate(ev.dataConsulta);
+                if (!dataEv || !dataAss) continue;
+                if (dataEv < dataAss) continue;
+                if (ev.tipoEvento === 'CONSULTA') {
+                    possuiPresencial = true;
+                } else if (ev.tipoEvento === 'Telemedicina DRC') {
+                    possuiOnline = true;
+                    totalTelemedicina++;
+                    if (!ultimaTelemedicinaDate || dataEv > ultimaTelemedicinaDate) {
+                        ultimaTelemedicinaDate = dataEv;
+                    }
+                } else if (ev.tipoEvento === 'ACESSO APP') {
+                    possuiApp = true;
+                    if (!ultimoAcessoAppDate || dataEv > ultimoAcessoAppDate) {
+                        ultimoAcessoAppDate = dataEv;
+                    }
+                }
+            }
+            if (possuiOnline) possuiApp = true; // regra: quem tem telemedicina tem app
+
+            p.possuiPresencial = possuiPresencial;
+            p.possuiOnline = possuiOnline;
+            p.possuiApp = possuiApp;
+            p.totalTelemedicina = totalTelemedicina;
+            if (ultimaTelemedicinaDate) {
+                p.ultimaTelemedicina = formatDateToBR(ultimaTelemedicinaDate);
+            }
+            if (ultimoAcessoAppDate) {
+                p.ultimoAcessoApp = formatDateToBR(ultimoAcessoAppDate);
+            }
+
+            // Atualizar ultimoAtendimentoGeral com a data mais recente entre presencial e telemedicina
+            let ultimoAtendimento = p.ultimaConsulta;
+            if (ultimaTelemedicinaDate) {
+                const dataTele = ultimaTelemedicinaDate;
+                const dataPres = p.ultimaConsulta ? parseDate(p.ultimaConsulta) : null;
+                if (!dataPres || (dataTele && dataTele > dataPres)) {
+                    ultimoAtendimento = formatDateToBR(dataTele);
+                }
+            }
+            p.ultimoAtendimentoGeral = ultimoAtendimento;
+
+            // Salvar eventos no mapa
+            const key = String(parseInt(cod,10)).trim();
+            eventosMap.set(key, eventos);
+        }
+
+        // Atribuir às variáveis globais
+        pacientes = pacientesObj;
+        listaPacientes = Object.values(pacientes);
+        listaPacientes.sort((a,b) => a.nome.localeCompare(b.nome));
+        mapaDependentes = dependentesMap;
+        eventosPorPaciente = eventosMap;
+
+        // Atualizar UI
+        atualizarOpcoesIdade();
+        aplicarFiltros();
+    }
+
+    // ======== FILTROS ========
+    function aplicarFiltros(){
+        const busca = document.getElementById('filtroBusca').value.toLowerCase().trim();
+        const statusFiltro = document.getElementById('filtroStatus').value;
+        const filtroDep = document.getElementById('filtroDependentes').value;
+        const filtroRetorno = document.getElementById('filtroRetorno').value;
+        const filtroSexo = document.getElementById('filtroSexo').value;
+        const dataAssinatura = document.getElementById('filtroDataAssinatura').value;
+        const filtroPlano = document.getElementById('filtroPlano').value;
+
+        const idadeCheckboxes = document.querySelectorAll('#idadeCheckboxContainer input[type="checkbox"]:checked');
+        const idadesSelecionadas = Array.from(idadeCheckboxes).map(cb => parseInt(cb.value, 10));
+        const utilizacaoCheckboxes = document.querySelectorAll('#utilizacaoDropdownPanel input[type="checkbox"][value]:checked');
+        const utilizacoesSelecionadas = Array.from(utilizacaoCheckboxes).map(cb => cb.value);
+        const inverterUtilizacao = document.getElementById('filtroUtilizacaoInverter').checked;
+
+        let filtrados = listaPacientes.filter(p => {
+            if(busca){ const nomeMatch = p.nome.toLowerCase().includes(busca); const codMatch = p.cod_paciente.toString().includes(busca); if(!nomeMatch && !codMatch) return false; }
+            if(statusFiltro){ const saude = calcularSaude(p); if(saude.status !== statusFiltro) return false; }
+            if(filtroDep !== ''){ if(p.tipo !== 'TITULAR' || p.codPlano !== '4') return false; if(p.qtdeDependentes !== parseInt(filtroDep,10)) return false; }
+            if(filtroRetorno){ if(p.categoriaRetorno !== filtroRetorno) return false; }
+            if (idadesSelecionadas.length > 0) { const idadePaciente = parseInt(p.idade, 10); if (isNaN(idadePaciente) || !idadesSelecionadas.includes(idadePaciente)) return false; }
+            if (filtroSexo) {
+                const sexoMap = { 'Masculino': ['M', 'Masculino', 'MASCULINO', 'm', 'masculino'], 'Feminino': ['F', 'Feminino', 'FEMININO', 'f', 'feminino'] };
+                const sexoPermitido = sexoMap[filtroSexo] || [];
+                if (!sexoPermitido.includes(p.sexo)) return false;
+            }
+
+            // ===== FILTRO DE UTILIZAÇÃO (CORRIGIDO: AND entre os selecionados) =====
+            if (utilizacoesSelecionadas.length > 0) {
+                const temTodas = utilizacoesSelecionadas.every(util => {
+                    if (util === 'presencial') return p.possuiPresencial;
+                    if (util === 'online') return p.possuiOnline;
+                    if (util === 'app') return p.possuiApp;
+                    return false;
+                });
+                if (inverterUtilizacao) {
+                    if (temTodas) return false;
+                } else {
+                    if (!temTodas) return false;
+                }
+            }
+
+            // FILTRO: DATA DE ASSINATURA
+            if (dataAssinatura) {
+                const [ano, mes] = dataAssinatura.split('-').map(Number);
+                const dataCad = parseDate(p.dataCad);
+                if (!dataCad) return false;
+                if (dataCad.getFullYear() !== ano || dataCad.getMonth() !== (mes - 1)) {
+                    return false;
+                }
+            }
+
+            // FILTRO: PLANO
+            if (filtroPlano) {
+                if (filtroPlano === 'Individual' && p.codPlano !== '1') return false;
+                if (filtroPlano === 'Familiar' && p.codPlano !== '4') return false;
+            }
+
+            return true;
+        });
+
+        ordenarPacientes(filtrados, ordemAtual.coluna, ordemAtual.direcao);
+        dadosFiltrados = filtrados;
+        paginaAtual = 1;
+        renderizarVisao();
+        renderizarGraficoSaude(filtrados);
+        atualizarStatsGerais(filtrados);
+    }
+
+    function limparFiltros(){
+        document.getElementById('filtroBusca').value='';
+        document.getElementById('filtroStatus').value='';
+        document.getElementById('filtroDependentes').value='';
+        document.getElementById('filtroRetorno').value='';
+        document.getElementById('filtroSexo').value='';
+        document.getElementById('filtroDataAssinatura').value = '';
+        document.getElementById('filtroPlano').value = '';
+        const checkboxesIdade = document.querySelectorAll('#idadeCheckboxContainer input[type="checkbox"]');
+        checkboxesIdade.forEach(cb => cb.checked = false);
+        atualizarLabelIdade();
+        const checkboxesUtil = document.querySelectorAll('#utilizacaoDropdownPanel input[type="checkbox"][value]');
+        checkboxesUtil.forEach(cb => cb.checked = false);
+        document.getElementById('filtroUtilizacaoInverter').checked = false;
+        atualizarLabelUtilizacao();
+        aplicarFiltros();
+    }
+
+    // ======== ORDENAÇÃO ========
+    function ordenar(coluna){ if(ordemAtual.coluna === coluna) ordemAtual.direcao = ordemAtual.direcao === 'asc' ? 'desc' : 'asc'; else { ordemAtual.coluna = coluna; ordemAtual.direcao = 'asc'; } aplicarFiltros(); }
+    function ordenarPacientes(lista,coluna,direcao){
+        const dir = direcao === 'asc' ? 1 : -1;
+        lista.sort((a,b)=>{
+            let valA,valB;
+            switch(coluna){
+                case 'PACIENTE_NOME': valA=a.nome; valB=b.nome; break;
+                case 'COD_PACIENTE': valA=a.cod_paciente; valB=b.cod_paciente; break;
+                case 'TIPO_PACIENTE': valA=a.tipo; valB=b.tipo; break;
+                case 'TOTAL_CONSULTAS': valA=a.totalConsultas; valB=b.totalConsultas; break;
+                case 'ULTIMO_ATENDIMENTO':
+                    const getUltimo = (p) => { if(!p.ultimoAtendimentoGeral) return -Infinity; const d=parseDate(p.ultimoAtendimentoGeral); return d ? d.getTime() : -Infinity; };
+                    valA=getUltimo(a); valB=getUltimo(b); return (valA-valB)*dir;
+                default: valA=a.nome; valB=b.nome;
+            }
+            if(typeof valA === 'string') return valA.localeCompare(valB)*dir;
+            return (valA-valB)*dir;
+        });
+    }
+
+    // ======== VIEW ========
+    function toggleView(view){ viewAtual=view; document.getElementById('tableView').classList.toggle('active',view==='table'); document.getElementById('cardView').classList.toggle('active',view==='card'); document.getElementById('btnTableView').classList.toggle('active',view==='table'); document.getElementById('btnCardView').classList.toggle('active',view==='card'); paginaAtual=1; renderizarVisao(); }
+    function renderizarVisao(){
+        const lista = dadosFiltrados || [];
+        totalPaginas = Math.ceil(lista.length / ITENS_POR_PAGINA);
+        if(paginaAtual > totalPaginas) paginaAtual = totalPaginas || 1;
+        const inicio = (paginaAtual-1)*ITENS_POR_PAGINA;
+        const fim = Math.min(inicio+ITENS_POR_PAGINA, lista.length);
+        const pagina = lista.slice(inicio, fim);
+        if(viewAtual === 'table'){ renderizarTabela(pagina); renderizarPaginacao('table'); }
+        else { renderizarCards(pagina); renderizarPaginacao('cards'); }
+    }
+
+    // ======== RENDER ========
+    function renderizarTabela(lista){
+        const tbody = document.getElementById('corpoTabela');
+        if(!lista || !lista.length){ tbody.innerHTML = `<tr><td colspan="7" class="empty-state"><i class="fas fa-search"></i><h3>Nenhum paciente encontrado</h3><p>Tente ajustar os filtros</p></td></tr>`; return; }
+        let html='';
+        lista.forEach(p=>{
+            const saude=calcularSaude(p);
+            const tipoBadge = p.tipo === 'TITULAR' ? 'badge-titular' : 'badge-dependente';
+            const tooltip = saude.tooltip || '';
+            const retornoClasse = p.categoriaRetorno === '3 meses' ? 'retorno-3meses' :
+                                  p.categoriaRetorno === '9 meses' ? 'retorno-9meses' :
+                                  p.categoriaRetorno === '1 ano' ? 'retorno-1ano' :
+                                  p.categoriaRetorno === 'Mais de 1 ano' ? 'retorno-mais1ano' : 'retorno-nunca';
+            let emojis = '';
+            if(p.possuiPresencial) emojis += '🩺 ';
+            if(p.possuiOnline) emojis += '💻 ';
+            if(p.possuiApp) emojis += '📱 ';
+            const ultimoAtendimento = p.ultimoAtendimentoGeral || '-';
+            const planoLabel = getPlanoNome(p.codPlano);
+            html += `<tr><td><span class="status-bar ${saude.status}" title="${tooltip}"></span><span>${p.nome}</span><span class="badge-retorno ${retornoClasse}">${p.categoriaRetorno}</span><span class="emoji-consulta">${emojis}</span><span style="font-size:10px; background:#f1f5f9; padding:1px 8px; border-radius:30px; margin-left:6px;">${planoLabel}</span></td><td>${p.cod_paciente}</td><td><span class="badge-paciente ${tipoBadge}">${p.tipo||'-'}</span></td><td>${ultimoAtendimento}</td><td><span class="badge-events">${p.totalConsultas}</span></td><td>R$ ${p.totalPago.toFixed(2)}</td><td><button class="btn-detail" onclick="abrirDetalhes('${p.cod_paciente}')"><i class="fas fa-eye"></i> Ver</button></td></tr>`;
+        });
+        tbody.innerHTML = html;
+    }
+    function renderizarCards(lista){
+        const container = document.getElementById('cardView');
+        if(!lista || !lista.length){ container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-search"></i><h3>Nenhum paciente encontrado</h3><p>Tente ajustar os filtros</p></div>`; return; }
+        let html='';
+        lista.forEach(p=>{
+            const saude=calcularSaude(p);
+            const iniciais=p.nome.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+            const tipoBadge=p.tipo==='TITULAR'?'badge-titular':'badge-dependente';
+            const tooltip=saude.tooltip || '';
+            const retornoClasse = p.categoriaRetorno === '3 meses' ? 'retorno-3meses' :
+                                  p.categoriaRetorno === '9 meses' ? 'retorno-9meses' :
+                                  p.categoriaRetorno === '1 ano' ? 'retorno-1ano' :
+                                  p.categoriaRetorno === 'Mais de 1 ano' ? 'retorno-mais1ano' : 'retorno-nunca';
+            let emojis='';
+            if(p.possuiPresencial) emojis+='🩺 ';
+            if(p.possuiOnline) emojis+='💻 ';
+            if(p.possuiApp) emojis+='📱 ';
+            const ultimoAtendimento = p.ultimoAtendimentoGeral || 'Sem atendimento';
+            const planoLabel = getPlanoNome(p.codPlano);
+            html += `<div class="patient-card" onclick="abrirDetalhes('${p.cod_paciente}')">
+                <div class="card-status-bar ${saude.status}"></div>
+                <div class="card-header"><div class="card-avatar">${iniciais}</div><div class="card-header-info"><h4><span class="status-bar ${saude.status}" title="${tooltip}"></span><span>${p.nome}</span><span class="badge-retorno ${retornoClasse}">${p.categoriaRetorno}</span><span class="emoji-consulta">${emojis}</span><span style="font-size:10px; background:#f1f5f9; padding:1px 8px; border-radius:30px;">${planoLabel}</span></h4><div><span class="badge-paciente ${tipoBadge}" style="font-size:10px;">${p.tipo||'-'}</span></div></div></div>
+                <div class="card-body"><div class="stats-mini"><span><i class="fas fa-calendar-check" style="color:#0a5a8c;width:16px;"></i> ${ultimoAtendimento}</span><small><i class="fas fa-list-ul"></i> ${p.totalConsultas} consultas | R$ ${p.totalPago.toFixed(2)}</small></div><div class="card-arrow"><i class="fas fa-chevron-right"></i></div></div>
+            </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    // ======== PAGINAÇÃO ========
+    function renderizarPaginacao(tipo){
+        const container = tipo === 'table' ? document.getElementById('paginationTable') : document.getElementById('paginationCards');
+        if(totalPaginas <= 1){ container.innerHTML=''; return; }
+        let html='';
+        const maxBotoes=7;
+        let inicio=Math.max(1, paginaAtual - Math.floor(maxBotoes/2));
+        let fim=Math.min(totalPaginas, inicio+maxBotoes-1);
+        if(fim-inicio < maxBotoes-1) inicio = Math.max(1, fim-maxBotoes+1);
+        html += `<button onclick="irParaPagina(1)" ${paginaAtual===1?'disabled':''}>&laquo;</button>`;
+        html += `<button onclick="irParaPagina(${paginaAtual-1})" ${paginaAtual===1?'disabled':''}>&lsaquo;</button>`;
+        for(let i=inicio; i<=fim; i++) html += `<button onclick="irParaPagina(${i})" class="${i===paginaAtual?'active':''}">${i}</button>`;
+        html += `<button onclick="irParaPagina(${paginaAtual+1})" ${paginaAtual===totalPaginas?'disabled':''}>&rsaquo;</button>`;
+        html += `<button onclick="irParaPagina(${totalPaginas})" ${paginaAtual===totalPaginas?'disabled':''}>&raquo;</button>`;
+        html += `<span class="info">${paginaAtual} / ${totalPaginas}</span>`;
+        container.innerHTML = html;
+    }
+    function irParaPagina(pagina){ if(pagina<1 || pagina>totalPaginas || pagina===paginaAtual) return; paginaAtual=pagina; renderizarVisao(); }
+
+    // ======== STATS ========
+    function atualizarStatsGerais(lista) {
+        const base = lista || listaPacientes;
+        const totalPac = base.length;
+        const totalTitulares = base.filter(p=>p.tipo==='TITULAR').length;
+        const totalDependentes = base.filter(p=>p.tipo==='DEPENDENTE').length;
+        const totalConsultas = base.reduce((s,p)=>s+p.totalConsultas,0);
+        const totalTelemedicina = base.reduce((s,p)=>s+(p.totalTelemedicina||0),0);
+        const totalApps = base.filter(p=>p.possuiApp).length;
+        document.getElementById('totalPacientes').textContent = totalPac;
+        document.getElementById('totalTitulares').textContent = totalTitulares;
+        document.getElementById('totalDependentes').textContent = totalDependentes;
+        document.getElementById('totalConsultas').textContent = totalConsultas;
+        document.getElementById('totalTelemedicina').textContent = totalTelemedicina;
+        document.getElementById('totalApps').textContent = totalApps;
+        atualizarKpiRetorno(base);
+    }
+
+    function atualizarKpiRetorno(lista){ const total = lista.length || 1; const retornaram = lista.filter(p => p.categoriaRetorno === '3 meses').length; const pct = Math.round((retornaram / total) * 100); document.getElementById('totalRetorno').textContent = pct + '%'; }
+
+    // ======== GRÁFICO ========
+    function renderizarGraficoSaude(lista){
+        const totalPacientes = lista.length;
+        document.getElementById('totalSaude').textContent = totalPacientes;
+        const statusMap = {saudavel:0, atencao:0, alerta:0};
+        lista.forEach(p=>{ const s=calcularSaude(p); if(statusMap[s.status]!==undefined) statusMap[s.status]++; });
+        const total = lista.length || 1;
+        const container = document.getElementById('chartBars');
+        const labels = {
+            saudavel:{label:'🟢 Saudável',class:'saudavel',desc:'Último atendimento (presencial ou telemedicina) há menos de 3 meses.'},
+            atencao:{label:'🟡 Atenção',class:'atencao',desc:'Último atendimento entre 3 e 9 meses.'},
+            alerta:{label:'🔴 Alerta',class:'alerta',desc:'Último atendimento há mais de 9 meses ou nunca.'}
+        };
+        let html='';
+        for(const [key,data] of Object.entries(labels)){
+            const count = statusMap[key] || 0;
+            const pct = (count/total*100).toFixed(1);
+            html += `<div class="chart-bar"><span class="label" title="${data.desc}">${data.label}</span><div class="bar-track"><div class="bar-fill ${data.class}" style="width:${pct}%;"></div></div><span class="count">${count}</span></div>`;
+        }
+        container.innerHTML = html;
+    }
+
+    // ======== MODAL DETALHES ========
+    function abrirDetalhes(codPaciente){
+        const p = listaPacientes.find(p=>p.cod_paciente===codPaciente);
+        if(!p) return;
+        pacienteAtual = codPaciente;
+        const iniciais = p.nome.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+        document.getElementById('modalAvatar').textContent = iniciais;
+        let emojis='';
+        if(p.possuiPresencial) emojis+='🩺 ';
+        if(p.possuiOnline) emojis+='💻 ';
+        if(p.possuiApp) emojis+='📱 ';
+        document.getElementById('modalNome').innerHTML = `${p.nome} <span class="emoji-consulta">${emojis}</span>`;
+        const saude=calcularSaude(p);
+        const tooltip=saude.tooltip || '';
+        document.getElementById('modalStatusExtra').innerHTML = `<span class="status-dot ${saude.status}" style="width:18px;height:18px;vertical-align:middle;margin-right:8px;" title="${tooltip}"></span><span style="color:#64748b;">${p.tipo||'Paciente'}</span>`;
+        const planoExibido = p.nomePlano || getPlanoNome(p.codPlano) || '-';
+        const attrs = [
+            {icon:'fa-id-card',label:'CPF',value:p.cpf||'-'},
+            {icon:'fa-phone',label:'Telefone',value:p.telefone||'-'},
+            {icon:'fa-envelope',label:'E-mail',value:p.email||'-'},
+            {icon:'fa-venus-mars',label:'Sexo',value:p.sexo||'-'},
+            {icon:'fa-calendar-alt',label:'Idade',value:p.idade ? p.idade+' anos' : '-'},
+            {icon:'fa-birthday-cake',label:'Nascimento',value:p.nasc||'-'},
+            {icon:'fa-id-badge',label:'Plano',value:planoExibido},
+            {icon:'fa-users',label:'Dependentes',value:p.tipo==='TITULAR' ? p.qtdeDependentes : '-'},
+            {icon:'fa-clock',label:'Retorno (presencial)',value:p.categoriaRetorno},
+            {icon:'fa-calendar-check',label:'Última consulta presencial',value:p.ultimaConsulta || '-'},
+            {icon:'fa-video',label:'Última telemedicina DRC',value:p.ultimaTelemedicina || '-'}
+        ];
+        if(p.ultimoAcessoApp) attrs.push({icon:'fa-mobile-alt',label:'Último acesso ao app',value:p.ultimoAcessoApp});
+        const attrsHtml = attrs.map(a => `<span class="attr-block"><i class="fas ${a.icon}"></i> <strong>${a.label}:</strong> ${a.value}</span>`).join('');
+        document.getElementById('modalAttributes').innerHTML = attrsHtml;
+        document.getElementById('modalTotalEventos').textContent = p.totalConsultas;
+        const faturado = p.totalPago + (p.totalConsultas * 10);
+        document.getElementById('modalTotalFaturado').textContent = `R$ ${faturado.toFixed(2)}`;
+        document.getElementById('modalTotalPago').textContent = `R$ ${p.totalPago.toFixed(2)}`;
+        document.getElementById('modalTotalDesconto').textContent = `R$ ${(p.totalConsultas * 10).toFixed(2)}`;
+
+        const container = document.getElementById('timelineContainer');
+        const key = String(parseInt(codPaciente,10)).trim();
+        const timelineItems = [];
+        if(p.dataCad && p.dataCad.trim() !== '') timelineItems.push({tipo:'assinatura', data:p.dataCad, hora:'', descricao:'📝 Assinou o plano / cartão', valor:''});
+        if(eventosPorPaciente && eventosPorPaciente.has(key)){
+            const eventos = eventosPorPaciente.get(key);
+            eventos.forEach(ev=>{
+                if(ev.tipoEvento === 'CONSULTA') timelineItems.push({tipo:'consulta', data:ev.dataConsulta, hora:ev.hora, descricao:`${ev.especialidade||'Consulta'} ${ev.exame ? '- ' + ev.exame : ''}`, valor:`R$ ${ev.valorAg.toFixed(2)}`});
+                else if(ev.tipoEvento === 'EMAIL') timelineItems.push({tipo:'email', data:ev.dataConsulta, hora:ev.hora, descricao:`📧 ${ev.assuntoEmail||'E-mail enviado'}`, valor:''});
+                else if(ev.tipoEvento === 'Telemedicina DRC') timelineItems.push({tipo:'telemedicina', data:ev.dataConsulta, hora:ev.hora, descricao:`💻 Telemedicina DRC ${ev.especialidade ? '- ' + ev.especialidade : ''}`, valor: ev.valorAg ? `R$ ${ev.valorAg.toFixed(2)}` : ''});
+                else if(ev.tipoEvento === 'ACESSO APP') timelineItems.push({tipo:'app', data:ev.dataConsulta, hora:ev.hora, descricao:'📱 Acessou o aplicativo', valor:''});
+            });
+        }
+        timelineItems.sort((a,b)=>{ const da=parseDate(a.data); const db=parseDate(b.data); if(da&&db) return da-db; if(da) return -1; if(db) return 1; return 0; });
+        if(!timelineItems.length){
+            container.innerHTML = `<div class="empty-state" style="padding:20px;"><p>Nenhum evento encontrado.</p></div>`;
+        } else {
+            let html='<div class="timeline">';
+            timelineItems.forEach(item=>{
+                let classe='timeline-item', icone='🩺', desc=item.descricao;
+                if(item.tipo==='assinatura'){ classe+=' assinatura'; icone='📝'; }
+                else if(item.tipo==='email'){ classe+=' email'; icone='📧'; }
+                else if(item.tipo==='telemedicina'){ classe+=' telemedicina'; icone='💻'; if(item.valor) desc+=` <span class="tag">${item.valor}</span>`; }
+                else if(item.tipo==='app'){ classe+=' app'; icone='📱'; }
+                else { desc+=` <span class="tag">${item.valor}</span>`; }
+                html += `<div class="${classe}"><div class="time"><strong>${item.data}</strong> ${item.hora ? `às ${item.hora}` : ''}</div><div class="desc">${icone} ${desc}</div></div>`;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        const depContainer = document.getElementById('dependentesContainer');
+        const titularKey = String(parseInt(p.codTitular || p.cod_paciente,10)).trim();
+        if(mapaDependentes.has(titularKey)){
+            const dependentes = mapaDependentes.get(titularKey);
+            if(!dependentes.length){
+                depContainer.innerHTML = `<p style="color:#94a3b8; font-size:13px;">Nenhum dependente.</p>`;
+            } else {
+                let html='<div class="dependentes-list">';
+                dependentes.forEach(dep=>{
+                    const saudeDep=calcularSaude(dep);
+                    const tooltipDep=saudeDep.tooltip || '';
+                    const consultou=consultouAposAssinatura(dep);
+                    const tag = consultou ? '<span class="consultou-tag sim">🩺</span>' : '<span class="consultou-tag nao"></span>';
+                    html += `<div class="dependente-chip" onclick="event.stopPropagation(); abrirDetalhes('${dep.cod_paciente}')" title="Clique para ver detalhes"><span class="status-dot ${saudeDep.status}" style="width:10px;height:10px;border-width:1px;" title="${tooltipDep}"></span>${dep.nome} (${dep.cod_paciente}) ${tag}</div>`;
+                });
+                html += '</div>';
+                depContainer.innerHTML = html;
+            }
+        } else {
+            depContainer.innerHTML = `<p style="color:#94a3b8; font-size:13px;">Nenhum dependente.</p>`;
+        }
+        document.getElementById('modalDetalhes').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    function fecharModal(){ document.getElementById('modalDetalhes').classList.remove('active'); document.body.style.overflow=''; pacienteAtual=null; }
+    document.getElementById('modalDetalhes').addEventListener('click',function(e){ if(e.target===this) fecharModal(); });
+
+    // ======== GRUPOS ========
+    function criarGrupo() {
+        if (!dadosFiltrados || dadosFiltrados.length === 0) {
+            alert('Nenhum paciente filtrado. Aplique filtros antes de criar um grupo.');
+            return;
+        }
+        const nome = prompt('Nome do grupo:');
+        if (!nome || nome.trim() === '') {
+            alert('Nome inválido.');
+            return;
+        }
+        grupos.push({
+            nome: nome.trim(),
+            pacientes: [...dadosFiltrados],
+            status: 'ativo',
+            jornada: null
+        });
+        alert(`Grupo "${nome}" criado com ${dadosFiltrados.length} pacientes.`);
+        renderizarGrupos();
+        mudarPagina('grupos');
+    }
+
+    function renderizarGrupos() {
+        const ativosContainer = document.getElementById('gruposAtivosContainer');
+        const bandejaContainer = document.getElementById('gruposBandejaContainer');
+        const gruposAtivos = grupos.filter(g => g.status === 'ativo');
+        const gruposBandeja = grupos.filter(g => g.status === 'bandeja');
+
+        if (gruposAtivos.length === 0) {
+            ativosContainer.innerHTML = `<div class="empty-placeholder">Nenhum grupo ativo. Crie um na aba "Geral".</div>`;
+        } else {
+            let html = '';
+            gruposAtivos.forEach((grupo, index) => {
+                html += renderizarCardGrupo(grupo, index);
+            });
+            ativosContainer.innerHTML = html;
+        }
+
+        if (gruposBandeja.length === 0) {
+            bandejaContainer.innerHTML = `<div class="empty-placeholder">Arraste um grupo para cá para atribuir uma jornada</div>`;
+        } else {
+            let html = '';
+            gruposBandeja.forEach((grupo, index) => {
+                html += renderizarCardGrupo(grupo, index);
+            });
+            bandejaContainer.innerHTML = html;
+        }
+    }
+
+    function renderizarCardGrupo(grupo, index) {
+        const isBandeja = grupo.status === 'bandeja';
+        const cores = ['azul', 'verde', 'roxo', 'laranja', 'rosa'];
+        const cor = cores[index % cores.length];
+        let jornadaHtml = '';
+        if (isBandeja && grupo.jornada) {
+            jornadaHtml = `<span class="jornada-tag atribuida"><i class="fas fa-check"></i> ${grupo.jornada}</span>`;
+        } else if (isBandeja && !grupo.jornada) {
+            jornadaHtml = `<span class="jornada-tag aguardando"><i class="fas fa-clock"></i> Aguardando</span>`;
+        }
+        const qtdPacientes = grupo.pacientes.length;
+        const labelPacientes = qtdPacientes === 1 ? 'paciente' : 'pacientes';
+        const inicial = grupo.nome.charAt(0).toUpperCase();
+
+        return `
+            <div class="grupo-card" draggable="true" data-index="${index}" data-status="${grupo.status}"
+                 ondragstart="onDragStart(event)" ondragend="onDragEnd(event)">
+                <div class="grupo-icone ${cor}">${inicial}</div>
+                <div class="grupo-header">
+                    <h4>${grupo.nome}</h4>
+                    <span class="badge-count">${qtdPacientes} ${labelPacientes}</span>
+                </div>
+                <div class="grupo-footer">
+                    <span class="qtd-pacientes"><i class="fas fa-user"></i> ${qtdPacientes}</span>
+                    ${jornadaHtml}
+                </div>
+                <div class="grupo-actions">
+                    ${!isBandeja ? `<button class="btn-mover" onclick="moverParaBandeja(${index})" title="Mover para bandeja"><i class="fas fa-arrow-right"></i> <span class="label">Bandeja</span></button>` : ''}
+                    ${isBandeja ? `<button class="btn-voltar" onclick="removerDaBandeja(${index})" title="Voltar para ativos"><i class="fas fa-undo"></i> <span class="label">Voltar</span></button>` : ''}
+                    ${isBandeja ? `<button class="btn-disparar" onclick="dispararJornada(${index})" title="Disparar jornada"><i class="fas fa-rocket"></i> <span class="label">Disparar</span></button>` : ''}
+                    <button class="btn-ver" onclick="verPacientesGrupo(${index})" title="Ver pacientes"><i class="fas fa-eye"></i> <span class="label">Ver</span></button>
+                    <button class="btn-exportar" onclick="exportarGrupoCSV(${index})" title="Exportar CSV"><i class="fas fa-file-export"></i> <span class="label">CSV</span></button>
+                </div>
+            </div>
+        `;
+    }
+
+    // ======== DRAG AND DROP ========
+    function onDragStart(event) {
+        const card = event.target.closest('.grupo-card');
+        if (!card) return;
+        const index = card.dataset.index;
+        const status = card.dataset.status;
+        grupoArrastadoIndex = parseInt(index, 10);
+        event.dataTransfer.setData('text/plain', JSON.stringify({ index, status }));
+        event.dataTransfer.effectAllowed = 'move';
+        card.style.opacity = '0.5';
+    }
+    function onDragEnd(event) {
+        const card = event.target.closest('.grupo-card');
+        if (card) card.style.opacity = '1';
+    }
+    function onDragOver(event) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'move';
+        const coluna = document.getElementById('colunaBandeja');
+        coluna.classList.add('drag-over');
+    }
+    function onDrop(event) {
+        event.preventDefault();
+        const coluna = document.getElementById('colunaBandeja');
+        coluna.classList.remove('drag-over');
+        const data = event.dataTransfer.getData('text/plain');
+        if (!data) return;
+        const parsed = JSON.parse(data);
+        const index = parsed.index;
+        const status = parsed.status;
+        if (status === 'bandeja') {
+            alert('Este grupo já está na bandeja.');
+            return;
+        }
+        const grupo = grupos[index];
+        if (!grupo) return;
+        abrirModalJornada(index);
+    }
+
+    function abrirModalJornada(index) {
+        const grupo = grupos[index];
+        if (!grupo) return;
+        document.getElementById('jornadaGrupoInfo').textContent = `Grupo: "${grupo.nome}" (${grupo.pacientes.length} pacientes)`;
+        const container = document.getElementById('jornadaListContainer');
+        let html = '';
+        JORNADAS.forEach(j => {
+            html += `
+                <div class="jornada-item" onclick="atribuirJornada(${index}, '${j.id}', '${j.nome}')">
+                    <i class="fas ${j.icone}"></i>
+                    <span class="jornada-nome">${j.nome}</span>
+                    <span class="jornada-desc">${j.desc}</span>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+        document.getElementById('modalEscolhaJornada').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    function fecharModalJornada() {
+        document.getElementById('modalEscolhaJornada').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    function atribuirJornada(index, id, nome) {
+        const grupo = grupos[index];
+        if (!grupo) return;
+        grupo.status = 'bandeja';
+        grupo.jornada = nome;
+        fecharModalJornada();
+        renderizarGrupos();
+        alert(`Grupo "${grupo.nome}" movido para a bandeja com a jornada "${nome}".`);
+    }
+
+    function moverParaBandeja(index) { abrirModalJornada(index); }
+    function removerDaBandeja(index) {
+        const grupo = grupos[index];
+        if (!grupo) return;
+        if (confirm(`Deseja mover o grupo "${grupo.nome}" de volta para "Meus Grupos"?`)) {
+            grupo.status = 'ativo';
+            grupo.jornada = null;
+            renderizarGrupos();
+        }
+    }
+    function verPacientesGrupo(index) {
+        const grupo = grupos[index];
+        if (!grupo) return;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay active';
+        modal.innerHTML = `
+            <div class="modal-box" style="max-width:800px;">
+                <div class="modal-header">
+                    <div class="modal-user">
+                        <div class="avatar-lg" style="background:#6c3cb0;"><i class="fas fa-users"></i></div>
+                        <div class="info"><h2>${grupo.nome}</h2><div class="status-extra">${grupo.pacientes.length} pacientes</div></div>
+                    </div>
+                    <button class="modal-close-btn" onclick="this.closest('.modal-overlay').remove(); document.body.style.overflow='';"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body" style="overflow-y:auto;">
+                    <table>
+                        <thead><tr><th>Nome</th><th>Código</th><th>Telefone</th><th>E-mail</th><th>Idade</th></tr></thead>
+                        <tbody>
+                            ${grupo.pacientes.map(p => `
+                                <tr>
+                                    <td>${p.nome}</td>
+                                    <td>${p.cod_paciente}</td>
+                                    <td>${p.telefone || '-'}</td>
+                                    <td>${p.email || '-'}</td>
+                                    <td>${p.idade || '-'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        document.body.style.overflow = 'hidden';
+    }
+    function exportarGrupoCSV(index) {
+        const grupo = grupos[index];
+        if (!grupo || grupo.pacientes.length === 0) {
+            alert('Grupo vazio ou inexistente.');
+            return;
+        }
+        const cabecalho = 'NOME;COD_PACIENTE;TELEFONE;EMAIL;IDADE;DATA_ASSINATURA;PLANO';
+        const linhas = grupo.pacientes.map(p => 
+            `${p.nome};${p.cod_paciente};${p.telefone || ''};${p.email || ''};${p.idade || ''};${p.dataCad || ''};${getPlanoNome(p.codPlano)}`
+        );
+        const csv = cabecalho + '\n' + linhas.join('\n');
+        baixarCSV(csv, `grupo_${grupo.nome.replace(/\s+/g, '_')}.csv`);
+    }
+    function dispararJornada(index) {
+        const grupo = grupos[index];
+        if (!grupo) return alert('Grupo não encontrado.');
+        if (!grupo.jornada) return alert('Este grupo ainda não tem uma jornada atribuída. Arraste-o para a bandeja e escolha uma jornada.');
+        const msg = `Disparar jornada "${grupo.jornada}" para ${grupo.pacientes.length} pacientes?`;
+        if (confirm(msg)) {
+            alert(`✅ Jornada "${grupo.jornada}" disparada para ${grupo.pacientes.length} pacientes!`);
+        }
+    }
+
+    // ======== EXPORT ========
+    function exportarCSV(){
+        if(!dadosFiltrados || !dadosFiltrados.length){ alert('Nenhum dado filtrado para exportar.'); return; }
+        const cab = Object.keys(dadosFiltrados[0]).join(';');
+        const linhas = dadosFiltrados.map(p => Object.values(p).map(v => (typeof v === 'string' && v.includes(';')) ? `"${v}"` : v).join(';'));
+        baixarCSV(cab + '\n' + linhas.join('\n'), 'relatorio_filtrado.csv');
+    }
+    function exportarEventosPaciente(){
+        if(!pacienteAtual){ alert('Nenhum paciente selecionado.'); return; }
+        const key = String(parseInt(pacienteAtual,10)).trim();
+        if(!eventosPorPaciente || !eventosPorPaciente.has(key)){ alert('Arquivo de eventos não carregado ou paciente sem eventos.'); return; }
+        const eventos = eventosPorPaciente.get(key);
+        if(!eventos.length){ alert('Nenhum evento.'); return; }
+        const cab = Object.keys(eventos[0]).join(';')
+        const linhas = eventos.map(ev => Object.values(ev).map(v => (typeof v === 'string' && v.includes(';')) ? `"${v}"` : v).join(';'));
+        baixarCSV(cab + '\n' + linhas.join('\n'), `eventos_${pacienteAtual}.csv`);
+    }
+    function baixarCSV(csv, nome){
+        const blob = new Blob(['\uFEFF' + csv], {type:'text/csv;charset=utf-8;'});
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = nome;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+    }
+
+    // ======== ATUALIZAR LABELS ========
+    function atualizarLabelIdade(){
+        const checkboxes = document.querySelectorAll('#idadeCheckboxContainer input[type="checkbox"]:checked');
+        const selecionadas = Array.from(checkboxes).map(cb => cb.value);
+        const label = document.getElementById('idadeLabel');
+        if (selecionadas.length === 0) label.textContent = 'Todas as idades';
+        else label.textContent = selecionadas.join(', ') + (selecionadas.length > 5 ? ' ...' : '');
+    }
+    function toggleIdadeDropdown(){ document.getElementById('idadeDropdownPanel').classList.toggle('open'); }
+    function selecionarTodasIdades(){ const checkboxes = document.querySelectorAll('#idadeCheckboxContainer input[type="checkbox"]'); checkboxes.forEach(cb => cb.checked = true); atualizarLabelIdade(); aplicarFiltros(); }
+    function limparIdades(){ const checkboxes = document.querySelectorAll('#idadeCheckboxContainer input[type="checkbox"]'); checkboxes.forEach(cb => cb.checked = false); atualizarLabelIdade(); aplicarFiltros(); }
+    document.addEventListener('click', function(e){
+        const grupoIdade = document.getElementById('idadeFilterGroup');
+        if (!grupoIdade.contains(e.target)) document.getElementById('idadeDropdownPanel').classList.remove('open');
+        const grupoUtilizacao = document.getElementById('utilizacaoFilterGroup');
+        if (!grupoUtilizacao.contains(e.target)) document.getElementById('utilizacaoDropdownPanel').classList.remove('open');
+    });
+
+    function toggleUtilizacaoDropdown(){ document.getElementById('utilizacaoDropdownPanel').classList.toggle('open'); }
+    function selecionarTodasUtilizacoes(){ const checkboxes = document.querySelectorAll('#utilizacaoDropdownPanel input[type="checkbox"][value]'); checkboxes.forEach(cb => cb.checked = true); atualizarLabelUtilizacao(); aplicarFiltros(); }
+    function limparUtilizacoes(){ const checkboxes = document.querySelectorAll('#utilizacaoDropdownPanel input[type="checkbox"][value]'); checkboxes.forEach(cb => cb.checked = false); document.getElementById('filtroUtilizacaoInverter').checked = false; atualizarLabelUtilizacao(); aplicarFiltros(); }
+    function atualizarLabelUtilizacao(){
+        const checkboxes = document.querySelectorAll('#utilizacaoDropdownPanel input[type="checkbox"][value]:checked');
+        const selecionadas = Array.from(checkboxes).map(cb => {
+            switch(cb.value) {
+                case 'presencial': return '🩺';
+                case 'online': return '💻';
+                case 'app': return '📱';
+                default: return cb.value;
+            }
+        });
+        const inverter = document.getElementById('filtroUtilizacaoInverter').checked;
+        let texto = selecionadas.length ? selecionadas.join(', ') : 'Todas';
+        if (inverter) texto = 'NÃO: ' + texto;
+        document.getElementById('utilizacaoLabel').textContent = texto || 'Todas as utilizações';
+    }
+
+    function atualizarOpcoesIdade(){
+        const container = document.getElementById('idadeCheckboxContainer');
+        const idades = new Set();
+        listaPacientes.forEach(p => { const idade = parseInt(p.idade, 10); if (!isNaN(idade)) idades.add(idade); });
+        const sortedIdades = Array.from(idades).sort((a,b) => a-b);
+        if (sortedIdades.length === 0) {
+            container.innerHTML = '<div style="color:#94a3b8; font-size:13px; padding:8px 0;">Nenhuma idade disponível</div>';
+            return;
+        }
+        let html = '';
+        sortedIdades.forEach(idade => {
+            html += `<label class="idade-checkbox-item">
+                <input type="checkbox" value="${idade}" onchange="aplicarFiltros()">
+                <span>${idade} anos</span>
+            </label>`;
+        });
+        container.innerHTML = html;
+        atualizarLabelIdade();
+    }
+
+    // ======== INICIALIZAÇÃO ========
+    document.addEventListener('DOMContentLoaded', function() {
+        gerarDadosExemplo();
+        renderizarGrupos();
+        atualizarLabelUtilizacao();
+        console.log('🚀 CRM com 50 pacientes fictícios carregados com sucesso!');
+    });
+</script>
+</body>
+</html>
